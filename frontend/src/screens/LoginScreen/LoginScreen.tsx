@@ -1,19 +1,26 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./loginScreen.scss";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [eyeOpen, setEyeOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const handleEye = () => {
     setEyeOpen(!eyeOpen);
   };
 
-  const submitHandler = (e: any) => {
+  const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //DISPATCH_LOGIN
-    //dispatch(login(email, password));
+
+    if (email.trim()) {
+      //DISPATCH_LOGIN
+      //dispatch(login(email, password));
+    } else {
+      setError("Make sure each field has a valid value.");
+    }
   };
 
   return (
@@ -93,8 +100,8 @@ const LoginScreen = () => {
                   </div>
                 </div>
               </div>
-              {/* <p className="errorMessage">{error}</p>
-              {loading && (
+              <p className="errorMessage">{error}</p>
+              {/* {loading && (
                 <i
                   className="fas fa-spinner fa-spin"
                   style={{ color: "rgba(255, 168, 0, 0.9)" }}
@@ -106,7 +113,9 @@ const LoginScreen = () => {
             </form>
             <p className="bottomLinks">
               <span className="link">Forgot Password?</span>
-              <span className="link">Sign up for Twitter</span>
+              <Link to="/signup" className="link">
+                Sign up for Twitter
+              </Link>
             </p>
           </div>
         </div>
