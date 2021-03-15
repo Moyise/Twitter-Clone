@@ -5,9 +5,21 @@
   text-decoration: none;
   list-style: none;
   -webkit-tap-highlight-color: transparent; /* for removing the highlight */
+  ::selection {
+    background: #ffb7b788;
+  }
 }
 
 body {
   font-family: "Poppins", sans-serif;
   background-color: #191919;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #464646;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #707070;
+  }
 }

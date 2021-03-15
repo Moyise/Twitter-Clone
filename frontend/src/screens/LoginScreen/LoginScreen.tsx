@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./loginScreen.scss";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [eyeOpen, setEyeOpen] = useState(false);
   const [error, setError] = useState("");
@@ -15,9 +15,9 @@ const LoginScreen = () => {
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (email.trim()) {
+    if (usernameOrEmail.trim()) {
       //DISPATCH_LOGIN
-      //dispatch(login(email, password));
+      //dispatch(login(email.toLowerCase(), password));
     } else {
       setError("Make sure each field has a valid value.");
     }
@@ -50,8 +50,8 @@ const LoginScreen = () => {
                 <div className="formInputWrap">
                   <input
                     type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={usernameOrEmail}
+                    onChange={(e) => setUsernameOrEmail(e.target.value)}
                     className="formInput"
                     required
                   />

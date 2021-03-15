@@ -7,7 +7,7 @@ const SignupScreen = () => {
   const [eyeOpen2, setEyeOpen2] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,12 +23,12 @@ const SignupScreen = () => {
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (email.trim() && firstName.trim() && lastName.trim() && userName.trim()) {
+    if (email.trim() && firstName.trim() && lastName.trim() && username.trim()) {
       if (password !== confirmPassword) {
         setMessage("Passwords do not match");
       } else {
         //DISPATCH_SIGNUP
-        //dispatch(signup(firstName, lastName, userName, email, password));
+        //dispatch(signup(firstName, lastName, username, email.toLowerCase(), password));
       }
     } else {
       setMessage("Make sure each field has a valid value.");
@@ -88,8 +88,8 @@ const SignupScreen = () => {
                 <div className="formInputWrap">
                   <input
                     type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="formInput"
                     required
                     maxLength={50}
