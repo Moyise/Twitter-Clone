@@ -1,0 +1,112 @@
+.homeScreen {
+  max-width: 650px;
+  width: 100%;
+  // background-color: rgb(70, 70, 70);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  .homeContainer {
+    position: relative;
+    // height: 200vh;
+    .title {
+      position: sticky;
+      top: 0;
+      height: 53px;
+      padding: 15px;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      background-color: #000000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .newPost {
+      width: 100%;
+      min-height: 150px;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: flex-start;
+      .left {
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 100px;
+          object-fit: contain;
+        }
+      }
+      .right {
+        padding-left: 20px;
+        padding-top: 10px;
+        width: 100%;
+        .postForm {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .postTextarea {
+            width: 100%;
+            min-height: 80px;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            border: none;
+            outline: none;
+            resize: none;
+          }
+          .buttonWrap {
+            display: flex;
+            width: 100%;
+            .submitButton {
+              margin: auto 0 auto auto;
+              width: 70px;
+              height: 30px;
+              background: #1a91da;
+              border-radius: 20px;
+              border: none;
+              outline: none;
+              font-weight: 600;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.9);
+              cursor: pointer;
+            }
+            .submitButton.disabled {
+              cursor: default;
+              opacity: 0.5;
+            }
+          }
+        }
+        .errorMessage {
+          font-weight: normal;
+          font-size: 12px;
+          color: rgba(255, 0, 0, 0.9);
+        }
+      }
+    }
+    .bar {
+      background: #323232;
+      height: 12px;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .loading {
+      width: 100%;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .errorMessage {
+      font-weight: normal;
+      font-size: 12px;
+      color: rgba(255, 0, 0, 0.9);
+    }
+    .empty {
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      padding: 15px;
+    }
+  }
+}

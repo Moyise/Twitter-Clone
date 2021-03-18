@@ -1,4 +1,4 @@
-import { model, Schema, Model, Document } from "mongoose";
+import { model, Schema, Model, Document, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 
 interface IUser extends Document {
@@ -8,6 +8,8 @@ interface IUser extends Document {
   email: string;
   password: string;
   profilePic: string;
+  likes: object[];
+  retweets: object[];
   createdAt?: any;
   updatedAt?: any;
 }
@@ -20,6 +22,8 @@ const userSchema: Schema<IUser> = new Schema(
     email: { type: String, required: true, trim: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     profilePic: { type: String, default: "/images/profile.png" },
+    likes: [{ type: Types.ObjectId, ref: "Post" }],
+    retweets: [{ type: Types.ObjectId, ref: "Post" }],
   },
   {
     timestamps: true,

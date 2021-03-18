@@ -6,13 +6,13 @@
   list-style: none;
   -webkit-tap-highlight-color: transparent; /* for removing the highlight */
   ::selection {
-    background: #ffb7b788;
+    background: #b7ebff88;
   }
 }
 
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #191919;
+  background-color: #000000;
   &::-webkit-scrollbar {
     width: 8px;
   }

@@ -9,7 +9,7 @@ import {
   USER_REGISTER_SUCCESS,
 } from "../constants/userConstants";
 
-export const login = (email: string, password: string) => async (dispatch: any) => {
+export const login = (usOrEmail: string, password: string) => async (dispatch: any) => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST,
@@ -21,7 +21,11 @@ export const login = (email: string, password: string) => async (dispatch: any) 
       },
     };
 
-    const { data } = await axios.post("/api/users/signin", { email, password }, config);
+    const { data } = await axios.post(
+      "/api/users/signin",
+      { usOrEmail, password },
+      config
+    );
 
     dispatch({
       type: USER_LOGIN_SUCCESS,

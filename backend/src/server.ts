@@ -7,6 +7,7 @@ import connectDB from "./config/db";
 import { typeDefs } from "./config/typeDefs";
 import { resolvers } from "./config/resolvers";
 import userRoutes from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
 
 dotenv.config();
 connectDB();
@@ -23,7 +24,11 @@ const PORT = process.env.PORT || 5000;
 const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app });
 
+// Api routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+
+//
 
 if (process.env.NODE_ENV === "production") {
   const root = path.join("build");

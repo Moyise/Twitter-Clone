@@ -4,12 +4,13 @@ import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken";
 
 // @desc Auth user & get token
-// @route POST /....
+// @route POST /users/login
 // @access Public
 
 export const authUser = async (req: Request, res: Response) => {
   try {
     const { usOrEmail, password } = req.body;
+
     const user = await User.findOne({
       $or: [{ email: usOrEmail }, { username: usOrEmail }],
     });
@@ -25,6 +26,7 @@ export const authUser = async (req: Request, res: Response) => {
           email: user.email,
           profilePic: user.profilePic,
           token: generateToken(user._id),
+          likes: user.likes,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         });
@@ -38,7 +40,7 @@ export const authUser = async (req: Request, res: Response) => {
 };
 
 // @desc Register new user
-// @route POST /....
+// @route POST /api/users
 // @access Public
 
 export const registerUser = async (req: Request, res: Response) => {
@@ -73,6 +75,7 @@ export const registerUser = async (req: Request, res: Response) => {
         email: user.email,
         profilePic: user.profilePic,
         token: generateToken(user._id),
+        likes: user.likes,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });

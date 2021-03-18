@@ -1,0 +1,155 @@
+.postCard {
+  width: 100%;
+  min-height: 150px;
+  padding: 15px 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  .postCardTop {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    .userRePost {
+      font-weight: 300;
+      font-size: 12px;
+      padding-left: 10px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .postCardBottom {
+    display: flex;
+    align-items: flex-start;
+    .left {
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 100px;
+        object-fit: contain;
+      }
+    }
+    .right {
+      padding-left: 20px;
+      width: 100%;
+      font-style: normal;
+
+      .middleTop {
+        display: flex;
+        align-items: center;
+        .name {
+          font-weight: bold;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.9);
+          padding-right: 10px;
+        }
+        .at {
+          font-weight: 300;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.4);
+          span {
+            padding-right: 10px;
+          }
+        }
+      }
+      .middleBottom {
+        font-weight: 300;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.8);
+        padding-top: 4px;
+      }
+      .bottom {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        .left-c,
+        .middle-c,
+        .right-c {
+          color: rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: flex-start;
+          font-size: 12px;
+          user-select: none;
+          cursor: pointer;
+          .icon {
+            border-radius: 100px;
+            padding: 0 2px;
+          }
+          .number {
+            padding-left: 10px;
+          }
+        }
+        .left-c {
+          &:hover {
+            .icon {
+              svg {
+                path {
+                  fill: #5effff;
+                  fill-opacity: 0.6;
+                }
+              }
+            }
+            .number {
+              color: rgba(94, 255, 255, 0.6);
+            }
+          }
+        }
+        .middle-c {
+          &:hover {
+            .icon {
+              svg {
+                path {
+                  fill: #32ff53;
+                  fill-opacity: 0.6;
+                }
+              }
+            }
+            .number {
+              color: rgba(50, 255, 83, 0.6);
+            }
+          }
+        }
+        .middle-c.active {
+          .icon {
+            svg {
+              path {
+                fill: #32ff53;
+                fill-opacity: 0.6;
+              }
+            }
+          }
+          .number {
+            color: rgba(50, 255, 83, 0.6);
+          }
+        }
+        .right-c {
+          &:hover {
+            .icon {
+              svg {
+                path {
+                  fill: #ff00a8;
+                  fill-opacity: 0.6;
+                }
+              }
+            }
+            .number {
+              color: rgba(255, 0, 168, 0.6);
+            }
+          }
+        }
+        .right-c.active {
+          .icon {
+            svg {
+              path {
+                fill: #ff00a8;
+                fill-opacity: 0.6;
+              }
+            }
+          }
+          .number {
+            color: rgba(255, 0, 168, 0.6);
+          }
+        }
+      }
+    }
+  }
+}

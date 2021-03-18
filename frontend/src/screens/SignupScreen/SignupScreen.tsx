@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { register } from "../../actions/userActions";
+import { reducerState } from "../../store";
+import { IUserAuth } from "../../types";
 import "./signupScreen.scss";
 
 const SignupScreen = () => {
+  const history = useHistory();
+
   const [eyeOpen1, setEyeOpen1] = useState(false);
   const [eyeOpen2, setEyeOpen2] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -12,6 +18,19 @@ const SignupScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const dispatch = useDispatch();
+
+  const userRegister: IUserAuth = useSelector(
+    (state: reducerState) => state.userRegister
+  );
+  const { userInfo, loading, error } = userRegister;
+
+  useEffect(() => {
+    if (userInfo) {
+      history.push("/");
+    }
+  }, [userInfo, history]);
 
   const handleEye1 = () => {
     setEyeOpen1(!eyeOpen1);
@@ -28,7 +47,7 @@ const SignupScreen = () => {
         setMessage("Passwords do not match");
       } else {
         //DISPATCH_SIGNUP
-        //dispatch(signup(firstName, lastName, username, email.toLowerCase(), password));
+        dispatch(register(firstName, lastName, username, email.toLowerCase(), password));
       }
     } else {
       setMessage("Make sure each field has a valid value.");
@@ -42,14 +61,14 @@ const SignupScreen = () => {
           <div className="signupContainer">
             <div className="signupLogo">
               <svg
-                width="73"
-                height="73"
-                viewBox="0 0 73 73"
+                width="60"
+                height="60"
+                viewBox="0 0 60 60"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M47.4083 14.4696L64.4981 31.5595C66.2259 33.2869 67.3428 35.5309 67.6792 37.9508C68.0157 40.3708 67.5534 42.8344 66.3624 44.9676C65.1715 47.1009 63.317 48.7873 61.0805 49.7708C58.844 50.7543 56.3476 50.9811 53.9705 50.4169V51.0609C53.9705 52.7307 53.3071 54.3322 52.1263 55.513C50.9456 56.6938 49.3441 57.3571 47.6742 57.3571H40.4107V55.2036C40.4114 53.0128 39.543 50.9111 37.9961 49.3598C36.4491 47.8084 34.3499 46.9341 32.1591 46.9286H28.0138C27.4952 46.9286 26.9978 47.1346 26.6311 47.5013C26.2644 47.868 26.0584 48.3653 26.0584 48.8839C26.0584 49.4025 26.2644 49.8999 26.6311 50.2666C26.9978 50.6333 27.4952 50.8393 28.0138 50.8393H32.1591C34.5499 50.8393 36.5026 52.7946 36.5026 55.2036V57.3571H19.2903C18.4656 57.3565 17.6491 57.1928 16.8879 56.8757C16.1266 56.5585 15.4356 56.094 14.8544 55.509C14.2732 54.9239 13.8133 54.2297 13.5012 53.4664C13.1891 52.703 13.0309 51.8856 13.0357 51.0609V42.8484C13.0357 42.2383 13.0748 41.6387 13.1478 41.0495C11.7689 41.1299 10.3945 40.8278 9.1764 40.1764C7.95833 39.525 6.94395 38.5496 6.24525 37.3581C5.54655 36.1665 5.1907 34.805 5.217 33.424C5.24329 32.0429 5.6507 30.696 6.39425 29.5319C7.1378 28.3678 8.18857 27.4317 9.43055 26.8272C10.6725 26.2226 12.0574 25.973 13.4323 26.1059C14.8072 26.2388 16.1187 26.749 17.2219 27.5803C18.3251 28.4115 19.1771 29.5314 19.6839 30.8164C21.8505 29.4607 24.4133 28.6786 27.1612 28.6786H39.8033C41.7039 28.6786 43.5158 29.0514 45.174 29.7319C45.6876 28.8637 46.3159 28.1285 47.0511 27.3698L40.7783 21.0996C40.343 20.6643 39.9977 20.1475 39.7621 19.5787C39.5265 19.0099 39.4052 18.4003 39.4052 17.7846C39.4052 16.5413 39.8991 15.3488 40.7783 14.4696C41.6575 13.5905 42.85 13.0965 44.0933 13.0965C45.3367 13.0965 46.5291 13.5905 47.4083 14.4696V14.4696Z"
+                  d="M49.9875 16.72C52.2286 15.3802 53.9055 13.2706 54.705 10.785C52.5992 12.0345 50.2951 12.9147 47.8925 13.3875C44.5615 9.86379 39.2838 9.00629 35.0085 11.2941C30.7333 13.5819 28.5188 18.4487 29.6025 23.175C20.9766 22.7419 12.94 18.6673 7.49254 11.965C4.64964 16.8685 6.10242 23.1369 10.8125 26.29C9.10931 26.2352 7.44386 25.7741 5.95504 24.945C5.95504 24.99 5.95504 25.035 5.95504 25.08C5.95602 30.1879 9.55597 34.5877 14.5625 35.6C12.9827 36.0298 11.3256 36.0931 9.71754 35.785C11.1255 40.1531 15.1514 43.1457 19.74 43.235C15.9396 46.2178 11.2462 47.8354 6.41504 47.8275C5.55872 47.8287 4.70306 47.7795 3.85254 47.68C8.75851 50.8325 14.4685 52.5059 20.3 52.5C28.4132 52.5557 36.2101 49.3572 41.9469 43.62C47.6836 37.8828 50.8814 30.0856 50.825 21.9725C50.825 21.5075 50.8142 21.045 50.7925 20.585C52.8937 19.0665 54.7071 17.1853 56.1475 15.03C54.1901 15.8976 52.1137 16.4673 49.9875 16.72Z"
                   fill="white"
                   fillOpacity="0.9"
                 />
@@ -153,7 +172,7 @@ const SignupScreen = () => {
                 </div>
               </div>
               <div className="signupFormGroup">
-                <label className="formLabel">Re-enter password</label>
+                <label className="formLabel">Confirm password</label>
                 <div className="formInputWrap">
                   <input
                     type={eyeOpen2 ? "text" : "password"}
@@ -195,7 +214,14 @@ const SignupScreen = () => {
                   </div>
                 </div>
               </div>
-              <p className="errorMessage">{message}</p>
+              {message && <p className="errorMessage">{message}</p>}
+              {error && <p className="errorMessage">{error}</p>}
+              {loading && (
+                <i
+                  className="fas fa-spinner fa-spin"
+                  style={{ color: "rgba(0, 238, 255, 0.9)" }}
+                ></i>
+              )}
               <button type="submit" className="formSubmit">
                 Sign up
               </button>
