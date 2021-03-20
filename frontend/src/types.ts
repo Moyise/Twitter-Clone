@@ -25,9 +25,9 @@ export interface IPosts {
     {
       _id: string;
       content: string;
+      pinned: boolean;
       likes: string[];
       retweetUsers: string[];
-      retweetData: string;
       createdAt: string;
       user: {
         _id: string;
@@ -35,6 +35,36 @@ export interface IPosts {
         firstName: string;
         lastName: string;
         profilePic: string;
+      };
+      retweetData: {
+        _id: string;
+        content: string;
+        pinned: boolean;
+        likes: string[];
+        retweetUsers: string[];
+        createdAt: string;
+        user: {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          profilePic: string;
+        };
+      };
+      replyTo: {
+        _id: string;
+        content: string;
+        pinned: boolean;
+        likes: string[];
+        retweetUsers: string[];
+        createdAt: string;
+        user: {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          profilePic: string;
+        };
       };
     }
   ];
@@ -46,9 +76,9 @@ export interface IPost {
   post: {
     _id: string;
     content: string;
+    pinned: boolean;
     likes: string[];
     retweetUsers: string[];
-    retweetData: string;
     createdAt: string;
     user: {
       _id: string;
@@ -57,9 +87,42 @@ export interface IPost {
       lastName: string;
       profilePic: string;
     };
+    retweetData: {
+      _id: string;
+      content: string;
+      pinned: boolean;
+      likes: string[];
+      retweetUsers: string[];
+      createdAt: string;
+      user: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        profilePic: string;
+      };
+    };
+    replyTo: {
+      _id: string;
+      content: string;
+      pinned: boolean;
+      likes: string[];
+      retweetUsers: string[];
+      createdAt: string;
+      user: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        profilePic: string;
+      };
+    };
   };
-  liked: boolean;
-  retweeted: boolean;
+  liked?: boolean;
+  retweeted?: boolean;
+  replied?: boolean;
+  showModal?: boolean;
+  setShowModal?: any;
 }
 
 export interface ICreatePost {
@@ -75,4 +138,58 @@ export interface ILike {
     likes: string[];
   };
   error?: any;
+}
+
+export interface IPostReply {
+  success?: boolean;
+  loading?: boolean;
+  error?: any;
+}
+
+export interface IPostDetails {
+  post?: {
+    _id: string;
+    content: string;
+    pinned: boolean;
+    likes: string[];
+    retweetUsers: string[];
+    createdAt: string;
+    user: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      profilePic: string;
+    };
+    retweetData: {
+      _id: string;
+      content: string;
+      pinned: boolean;
+      likes: string[];
+      retweetUsers: string[];
+      createdAt: string;
+      user: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        profilePic: string;
+      };
+    };
+    replyTo: {
+      _id: string;
+      content: string;
+      pinned: boolean;
+      likes: string[];
+      retweetUsers: string[];
+      createdAt: string;
+      user: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        profilePic: string;
+      };
+    };
+  };
 }

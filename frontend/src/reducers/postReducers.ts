@@ -12,6 +12,12 @@ import {
   POST_RETWEET_REQUEST,
   POST_RETWEET_SUCCESS,
   POST_RETWEET_FAIL,
+  POST_REPLY_REQUEST,
+  POST_REPLY_SUCCESS,
+  POST_REPLY_FAIL,
+  POST_DETAILS_REQUEST,
+  POST_DETAILS_SUCCESS,
+  POST_DETAILS_FAIL,
 } from "../constants/postConstants";
 import { IAction } from "../types";
 
@@ -75,6 +81,38 @@ export const postRetweetReducer = (state = {}, { type, payload }: IAction) => {
       return { loading: false, success: true };
 
     case POST_RETWEET_FAIL:
+      return { loading: false, error: payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postReplyReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case POST_REPLY_REQUEST:
+      return { loading: true };
+
+    case POST_REPLY_SUCCESS:
+      return { loading: false, success: true };
+
+    case POST_REPLY_FAIL:
+      return { loading: false, error: payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postDetailsReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case POST_DETAILS_REQUEST:
+      return { ...state, loading: true };
+
+    case POST_DETAILS_SUCCESS:
+      return { loading: false, post: payload };
+
+    case POST_DETAILS_FAIL:
       return { loading: false, error: payload };
 
     default:

@@ -7,6 +7,7 @@ interface IPost extends Document {
   likes: object[];
   retweetUsers: object[];
   retweetData: string;
+  replyTo: string;
 }
 
 const postSchema: Schema = new Schema(
@@ -17,6 +18,7 @@ const postSchema: Schema = new Schema(
     likes: [{ type: Types.ObjectId, ref: "User" }],
     retweetUsers: [{ type: Types.ObjectId, ref: "User" }],
     retweetData: { type: Types.ObjectId, ref: "Post" },
+    replyTo: { type: Types.ObjectId, ref: "Post" },
   },
   {
     timestamps: true,

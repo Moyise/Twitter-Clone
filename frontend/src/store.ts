@@ -7,6 +7,8 @@ import {
   postCreateReducer,
   postListReducer,
   postRetweetReducer,
+  postReplyReducer,
+  postDetailsReducer,
 } from "./reducers/postReducers";
 
 const reducer = combineReducers({
@@ -16,6 +18,8 @@ const reducer = combineReducers({
   postCreate: postCreateReducer,
   postLike: postLikeReducer,
   postRetweet: postRetweetReducer,
+  postReply: postReplyReducer,
+  postDetails: postDetailsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

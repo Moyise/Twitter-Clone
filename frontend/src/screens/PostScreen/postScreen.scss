@@ -1,0 +1,102 @@
+.postScreen {
+  max-width: 650px;
+  width: 100%;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  .postContainer {
+    .title {
+      position: sticky;
+      top: 0;
+      height: 53px;
+      padding: 15px;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      background-color: #000000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .postDetails {
+      width: 100%;
+      min-height: 100px;
+      padding: 15px 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: flex-start;
+      .left {
+        width: 100%;
+        .top {
+          display: flex;
+          align-items: center;
+          img {
+            width: 48px;
+            height: 48px;
+            border-radius: 100px;
+            object-fit: contain;
+          }
+          .label {
+            padding-left: 20px;
+            .top {
+              font-weight: 600;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.9);
+            }
+            .bottom {
+              font-size: 12px;
+              color: rgba(255, 255, 255, 0.4);
+            }
+          }
+        }
+        .middle {
+          padding-top: 10px;
+          .postText {
+            font-weight: 300;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+        .bottom {
+          .bottomTop {
+            padding: 10px 0;
+            p {
+              color: rgba(255, 255, 255, 0.4);
+              font-weight: 300;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              span {
+                padding-right: 8px;
+              }
+            }
+          }
+          .bottomMiddle {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            p {
+              .number {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.8);
+                padding-right: 4px;
+              }
+              .label {
+                font-weight: normal;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.4);
+                padding-right: 20px;
+              }
+            }
+          }
+          .bottomBottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 10px;
+          }
+        }
+      }
+    }
+  }
+}

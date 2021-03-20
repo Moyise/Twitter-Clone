@@ -12,6 +12,12 @@ import {
   POST_RETWEET_REQUEST,
   POST_RETWEET_SUCCESS,
   POST_RETWEET_FAIL,
+  POST_REPLY_REQUEST,
+  POST_REPLY_SUCCESS,
+  POST_REPLY_FAIL,
+  POST_DETAILS_REQUEST,
+  POST_DETAILS_SUCCESS,
+  POST_DETAILS_FAIL,
 } from "../constants/postConstants";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
 
@@ -119,6 +125,57 @@ export const retweetPost = (postId: string, user: object) => async (dispatch: an
   } catch (error) {
     dispatch({
       type: POST_RETWEET_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const replyToPost = (postId: string, content: string) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: POST_REPLY_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/posts/${postId}/reply`, { content }, config);
+    dispatch({ type: POST_REPLY_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: POST_REPLY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const detailsPost = (id: string) => async (dispatch: any) => {
+  try {
+    dispatch({ type: POST_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`/api/posts/${id}`);
+
+    dispatch({
+      type: POST_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

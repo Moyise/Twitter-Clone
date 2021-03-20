@@ -5,6 +5,7 @@ import HomeScreen from "./screens/HomeScreen/HomeScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import SignupScreen from "./screens/SignupScreen/SignupScreen";
 import "./app.scss";
+import PostScreen from "./screens/PostScreen/PostScreen";
 
 function App() {
   return (
@@ -17,6 +18,13 @@ function App() {
 
           <Route path="/signup" exact>
             <SignupScreen />
+          </Route>
+
+          <Route path="/posts/:id" exact>
+            <div className="app">
+              <Sidebar />
+              <PostScreen />
+            </div>
           </Route>
 
           <Route path="/" exact>

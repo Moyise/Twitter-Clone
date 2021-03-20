@@ -1,0 +1,161 @@
+.modalBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  padding-top: 50px;
+  background: rgba(81, 172, 255, 0.1);
+  overflow: hidden;
+  z-index: 999;
+
+  .modal {
+    max-width: 660px;
+    width: 100%;
+    min-height: 300px;
+    background: #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    margin: auto;
+    .modalTop {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      svg {
+        cursor: pointer;
+        border-radius: 20px;
+        &:hover {
+          background: rgba(0, 133, 255, 0.1);
+        }
+      }
+    }
+    .modalMiddle {
+      width: 100%;
+      padding: 15px;
+      display: flex;
+      align-items: flex-start;
+      .left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 100px;
+          object-fit: contain;
+        }
+        .line {
+          margin-top: 10px;
+          width: 1px;
+          height: 50px;
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+      .right {
+        padding-left: 20px;
+        width: 100%;
+        font-style: normal;
+        .middleTop {
+          display: flex;
+          align-items: center;
+          .name {
+            font-weight: bold;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            padding-right: 10px;
+          }
+          .at {
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            span {
+              padding-right: 10px;
+            }
+          }
+        }
+        .middleBottom {
+          font-weight: 300;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.8);
+          padding-top: 4px;
+        }
+        .userProfile {
+          padding-top: 20px;
+          font-weight: 300;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.4);
+          span {
+            color: rgba(0, 178, 255, 0.6);
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .modalBottom {
+      padding: 15px;
+      width: 100%;
+      min-height: 150px;
+      display: flex;
+      align-items: flex-start;
+      .left {
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 100px;
+          object-fit: contain;
+        }
+      }
+      .right {
+        width: 100%;
+        padding-left: 20px;
+        padding-top: 10px;
+        .postForm {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .postTextarea {
+            width: 100%;
+            min-height: 80px;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            border: none;
+            outline: none;
+            resize: none;
+          }
+          .buttonWrap {
+            display: flex;
+            width: 100%;
+            .submitButton {
+              margin: auto 0 auto auto;
+              width: 70px;
+              height: 36px;
+              background: #1a91da;
+              border-radius: 20px;
+              border: none;
+              outline: none;
+              font-weight: 600;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.9);
+              cursor: pointer;
+            }
+            .submitButton.disabled {
+              cursor: default;
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+      .errorMessage {
+        font-weight: normal;
+        font-size: 12px;
+        color: rgba(255, 0, 0, 0.9);
+      }
+    }
+  }
+}

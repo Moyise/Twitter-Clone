@@ -9,7 +9,14 @@ import User from "../models/userModel";
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await Post.find().populate("user").sort({ createdAt: -1 });
+    let posts = await Post.find()
+      .populate("user")
+      .populate("retweetData")
+      .populate("replyTo")
+      .sort({ createdAt: -1 });
+
+    await User.populate(posts, { path: "replyTo.user" });
+    await User.populate(posts, { path: "retweetData.user" });
 
     res.json({ posts });
   } catch (error) {
@@ -129,5 +136,40 @@ export const retweetPost = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(404).json("Can't Retweet");
+  }
+};
+
+// @Add reply
+// @route PUT /api/posts/:id/reply
+// @access Private
+
+export const replyToPost = async (req: Request, res: Response) => {
+  try {
+    const { content } = req.body;
+    const postId = req.params.id;
+    const userId = req.body.user._id;
+
+    await Post.create({ user: userId, replyTo: postId, content });
+
+    res.status(200).json({ message: "Reply success" });
+  } catch (error) {
+    res.status(404).json({ message: "Can't Reply" });
+  }
+};
+
+//@desc Fetch single post
+//@route GET /api/post/:id
+//@access Private
+
+export const getPostById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const post = await Post.findById(id).populate("user").populate("retweetData");
+
+    if (post) {
+      res.json(post);
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Post not found" });
   }
 };

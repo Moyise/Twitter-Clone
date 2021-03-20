@@ -1,8 +1,9 @@
 .postCard {
   width: 100%;
-  min-height: 150px;
+  min-height: 100px;
   padding: 15px 15px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
   .postCardTop {
     display: flex;
     align-items: center;
@@ -26,7 +27,7 @@
         object-fit: contain;
       }
     }
-    .right {
+    .middle {
       padding-left: 20px;
       width: 100%;
       font-style: normal;
@@ -151,5 +152,18 @@
         }
       }
     }
+    .right {
+      svg {
+        cursor: pointer;
+        border-radius: 20px;
+        &:hover {
+          background: rgba(0, 133, 255, 0.1);
+        }
+      }
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 }

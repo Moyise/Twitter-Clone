@@ -1,19 +1,25 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import "./postCard.scss";
 import { IPost, ILike, IUserAuth } from "../../types";
 import timeDifference from "../../timeFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
 import { likePost, retweetPost } from "../../actions/postActions";
+import Modal from "../Modal/Modal";
+import { useHistory } from "react-router";
 
 const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
+
+  const [showModal, setShowModal] = useState(false);
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
   const postLike: ILike = useSelector((state: reducerState) => state.postLike);
-  const { success: likeSuccess, error: likeError, likes } = postLike;
+  const { success: likeSuccess } = postLike;
 
   const likesHandler = () => {
     if (userInfo) {
@@ -27,32 +33,48 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
     }
   };
 
+  const postLinkHandler = (e: any) => {
+    history.push(`/posts/${post._id}`);
+  };
+
   return (
     <>
       <div className="postCard">
-        <div className="postCardTop">
-          <div className="icon">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.11111 16L1 12.8L4.11111 9.6V12H11.8889V8.8H13.4444V12.8C13.4444 13.2418 13.0962 13.6 12.6667 13.6H4.11111V16ZM4.11111 7.2H2.55556V3.2C2.55556 2.75817 2.90378 2.4 3.33333 2.4H11.8889V0L15 3.2L11.8889 6.4V4H4.11111V7.2Z"
-                fill="white"
-                fillOpacity="0.2"
-              />
-            </svg>
+        {retweeted ? (
+          <div className="postCardTop">
+            <div className="icon">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.11111 16L1 12.8L4.11111 9.6V12H11.8889V8.8H13.4444V12.8C13.4444 13.2418 13.0962 13.6 12.6667 13.6H4.11111V16ZM4.11111 7.2H2.55556V3.2C2.55556 2.75817 2.90378 2.4 3.33333 2.4H11.8889V0L15 3.2L11.8889 6.4V4H4.11111V7.2Z"
+                  fill="white"
+                  fillOpacity="0.2"
+                />
+              </svg>
+            </div>
+            <p className="userRePost">
+              {post.user.username === userInfo?.username ? "You" : post.user.username}{" "}
+              Retweeted
+            </p>
           </div>
-          <p className="userRePost">{post.user.username} Retweeted</p>
-        </div>
+        ) : post.replyTo ? (
+          <div className="postCardTop">
+            {post.user._id === post.replyTo.user._id ? null : post.replyTo.user._id ===
+              userInfo?._id ? null : (
+              <p className="userRePost">You replied to {post.replyTo.user.firstName}</p>
+            )}
+          </div>
+        ) : null}
         <div className="postCardBottom">
           <div className="left">
             <img src={post.user.profilePic} alt="profile" />
           </div>
-          <div className="right">
+          <div className="middle">
             <div className="middleTop">
               <p className="name">{post.user.firstName}</p>
               <p className="at">
@@ -61,9 +83,11 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                 <span>{timeDifference(new Date(), new Date(post.createdAt))}</span>
               </p>
             </div>
-            <p className="middleBottom">{post.content}</p>
+            <p onClick={postLinkHandler} className="middleBottom">
+              {post.content || post.retweetData.content}
+            </p>
             <div className="bottom">
-              <div className="left-c">
+              <div className="left-c" onClick={() => setShowModal(!showModal)}>
                 <span className="icon">
                   <svg
                     width="16"
@@ -79,7 +103,7 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                     />
                   </svg>
                 </span>
-                <span className="number">43</span>
+                <span className="number">4</span>
               </div>
               <div
                 className={retweeted ? "middle-c active" : "middle-c"}
@@ -101,7 +125,9 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                   </svg>
                 </span>
                 <span className="number">
-                  {post.retweetUsers.length > 0 && post.retweetUsers.length}
+                  {(post.retweetUsers.length > 0 && post.retweetUsers.length) ||
+                    (post.retweetData?.retweetUsers.length > 0 &&
+                      post.retweetData?.retweetUsers.length)}
                 </span>
               </div>
               <div
@@ -124,12 +150,30 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                   </svg>
                 </span>
                 <span className="number">
-                  {post.likes.length > 0 && post.likes.length}
+                  {(post.likes.length > 0 && post.likes.length) ||
+                    (post.retweetData?.likes.length > 0 &&
+                      post.retweetData?.likes.length)}
                 </span>
               </div>
             </div>
           </div>
+          <div className="right">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.5 10.5C12.6716 10.5 12 9.82843 12 9C12 8.17157 12.6716 7.5 13.5 7.5C14.3284 7.5 15 8.17157 15 9C15 9.39782 14.842 9.77936 14.5607 10.0607C14.2794 10.342 13.8978 10.5 13.5 10.5ZM9 10.5C8.17157 10.5 7.5 9.82843 7.5 9C7.5 8.17157 8.17157 7.5 9 7.5C9.82843 7.5 10.5 8.17157 10.5 9C10.5 9.39782 10.342 9.77936 10.0607 10.0607C9.77935 10.342 9.39782 10.5 9 10.5ZM4.5 10.5C3.67157 10.5 3 9.82843 3 9C3 8.17157 3.67157 7.5 4.5 7.5C5.32843 7.5 6 8.17157 6 9C6 9.39782 5.84196 9.77936 5.56066 10.0607C5.27936 10.342 4.89782 10.5 4.5 10.5Z"
+                fill="white"
+                fillOpacity="0.3"
+              />
+            </svg>
+          </div>
         </div>
+        <Modal post={post} showModal={showModal} setShowModal={setShowModal} />
       </div>
     </>
   );

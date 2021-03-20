@@ -3,7 +3,7 @@ import "./homeScreen.scss";
 import PostCard from "../../components/PostCard/PostCard";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
-import { ICreatePost, IPosts, IUserAuth } from "../../types";
+import { ICreatePost, IPostReply, IPosts, IUserAuth } from "../../types";
 import { useHistory } from "react-router";
 import { createPost, listPosts } from "../../actions/postActions";
 import { POST_CREATE_RESET } from "../../constants/postConstants";
@@ -22,7 +22,10 @@ const HomeScreen = () => {
   const { posts, loading, error: postError } = postList;
 
   const postCreate: ICreatePost = useSelector((state: reducerState) => state.postCreate);
-  const { success, loading: createLoading, error: createError } = postCreate;
+  const { success } = postCreate;
+
+  const postReply: IPostReply = useSelector((state: reducerState) => state.postReply);
+  const { success: replySuccess } = postReply;
 
   const dispatch = useDispatch();
 
@@ -33,12 +36,12 @@ const HomeScreen = () => {
   }, [content]);
 
   useEffect(() => {
-    if (success) {
+    if (success || replySuccess) {
       dispatch({ type: POST_CREATE_RESET });
       dispatch(listPosts());
       setContent("");
     }
-  }, [success, dispatch]);
+  }, [success, dispatch, replySuccess]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -113,8 +116,14 @@ const HomeScreen = () => {
                   <PostCard
                     key={post._id}
                     post={post}
-                    liked={post.likes.includes(userInfo?._id!)}
-                    retweeted={post.retweetUsers.includes(userInfo?._id!)}
+                    liked={
+                      post.likes.includes(userInfo?._id!) ||
+                      post.retweetData?.likes.includes(userInfo?._id!)
+                    }
+                    retweeted={
+                      post.retweetUsers.includes(userInfo?._id!) ||
+                      post.retweetData?.retweetUsers.includes(userInfo?._id!)
+                    }
                   />
                 ))
               )}

@@ -1,11 +1,9 @@
 .homeScreen {
   max-width: 650px;
   width: 100%;
-  // background-color: rgb(70, 70, 70);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   .homeContainer {
-    position: relative;
     // height: 200vh;
     .title {
       position: sticky;
