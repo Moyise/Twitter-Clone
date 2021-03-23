@@ -3,19 +3,36 @@
   width: 100%;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
   .postContainer {
-    .title {
+    .topDetails {
       position: sticky;
       top: 0;
-      height: 53px;
-      padding: 15px;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: flex-start;
       background-color: #000000;
+      padding: 12px 15px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 999;
+      .title {
+        font-style: normal;
+        font-weight: 900;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        padding-left: 30px;
+      }
+      .icon {
+        padding-top: 2px;
+        svg {
+          cursor: pointer;
+          border-radius: 20px;
+          &:hover {
+            background: rgba(0, 133, 255, 0.1);
+          }
+        }
+      }
     }
+
     .postDetails {
       width: 100%;
       min-height: 100px;
@@ -94,7 +111,60 @@
             align-items: center;
             justify-content: space-between;
             padding: 4px 10px;
+            .bLeft,
+            .bMiddle,
+            .bRight {
+              cursor: pointer;
+            }
           }
+        }
+      }
+      .right {
+        position: relative;
+        .icon {
+          svg {
+            cursor: pointer;
+            border-radius: 20px;
+            &:hover {
+              background: rgba(0, 133, 255, 0.1);
+            }
+          }
+        }
+        .miniMenu {
+          position: absolute;
+          top: 40px;
+          right: 0;
+          background: #000000;
+          box-shadow: 0px -2px 10px rgba(255, 255, 255, 0.1),
+            0px 2px 10px rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          width: 200px;
+          min-height: 50px;
+          z-index: 12;
+          visibility: hidden;
+          opacity: 0;
+          transition: 0.3s;
+          .link {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 14px 10px;
+            .text {
+              font-weight: 300;
+              font-size: 15px;
+              color: rgba(255, 255, 255, 0.8);
+              padding-left: 10px;
+            }
+            &:hover {
+              background: rgba(255, 255, 255, 0.05);
+            }
+          }
+        }
+        .miniMenu.open {
+          top: 0;
+          visibility: visible;
+          opacity: 1;
+          transition: 0.3s;
         }
       }
     }

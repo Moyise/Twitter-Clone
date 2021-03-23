@@ -6,6 +6,8 @@ import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import SignupScreen from "./screens/SignupScreen/SignupScreen";
 import "./app.scss";
 import PostScreen from "./screens/PostScreen/PostScreen";
+import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
+import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
 
 function App() {
   return (
@@ -27,10 +29,23 @@ function App() {
             </div>
           </Route>
 
-          <Route path="/" exact>
+          <Route path="/profile/:id" exact>
+            <div className="app">
+              <Sidebar />
+              <ProfileScreen />
+            </div>
+          </Route>
+
+          <Route path="/home" exact>
             <div className="app">
               <Sidebar />
               <HomeScreen />
+            </div>
+          </Route>
+
+          <Route path="/" exact>
+            <div className="app">
+              <LoadingScreen />
             </div>
           </Route>
         </Switch>

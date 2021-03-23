@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../../actions/userActions";
 import { reducerState } from "../../store";
 import { IUserAuth } from "../../types";
@@ -36,7 +37,7 @@ const Sidebar = () => {
             </svg>
           </div>
           <ul className="sidebarLinks">
-            <li className="links">
+            <Link to="/home" className="links">
               <div className="icon">
                 <svg
                   width="30"
@@ -53,7 +54,7 @@ const Sidebar = () => {
                 </svg>
               </div>
               <p className="label">Home</p>
-            </li>
+            </Link>
             <li className="links">
               <div className="icon">
                 <svg
@@ -110,7 +111,7 @@ const Sidebar = () => {
               </div>
               <p className="label">Messages</p>
             </li>
-            <li className="links">
+            <Link to={`/profile/${userInfo?._id}`} className="links">
               <div className="icon">
                 <svg
                   width="30"
@@ -129,7 +130,7 @@ const Sidebar = () => {
                 </svg>
               </div>
               <p className="label">Profile</p>
-            </li>
+            </Link>
             <li className="links" onClick={logoutHandler}>
               <div className="icon">
                 <svg

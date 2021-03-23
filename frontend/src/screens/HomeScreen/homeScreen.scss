@@ -3,19 +3,19 @@
   width: 100%;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
   .homeContainer {
-    // height: 200vh;
-    .title {
+    .homeTitle {
       position: sticky;
       top: 0;
-      height: 53px;
-      padding: 15px;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      color: rgba(255, 255, 255, 0.9);
       background-color: #000000;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 14px 15px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      font-style: normal;
+      font-weight: 900;
+      font-size: 18px;
+      z-index: 999;
     }
     .newPost {
       width: 100%;

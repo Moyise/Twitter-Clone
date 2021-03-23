@@ -18,6 +18,14 @@ import {
   POST_DETAILS_REQUEST,
   POST_DETAILS_SUCCESS,
   POST_DETAILS_FAIL,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_FAIL,
+  POST_DELETE_RESET,
+  POSTS_USER_REQUEST,
+  POSTS_USER_SUCCESS,
+  POSTS_USER_FAIL,
+  POSTS_USER_RESET,
 } from "../constants/postConstants";
 import { IAction } from "../types";
 
@@ -114,6 +122,42 @@ export const postDetailsReducer = (state = {}, { type, payload }: IAction) => {
 
     case POST_DETAILS_FAIL:
       return { loading: false, error: payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postDeleteReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case POST_DELETE_REQUEST:
+      return { loading: true };
+    case POST_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case POST_DELETE_FAIL:
+      return { loading: false, error: payload };
+
+    case POST_DELETE_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export const postsUserReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case POSTS_USER_REQUEST:
+      return { loading: true };
+
+    case POSTS_USER_SUCCESS:
+      return { loading: false, posts: payload };
+
+    case POSTS_USER_FAIL:
+      return { loading: false, error: payload };
+
+    case POSTS_USER_RESET:
+      return {};
 
     default:
       return state;

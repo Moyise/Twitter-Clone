@@ -11,6 +11,25 @@ export interface IUserAuth {
     lastName: string;
     email: string;
     profilePic: string;
+    coverPic: string;
+    likes: string[];
+    retweets: string[];
+    createdAt: string;
+    updatedAt: string;
+  };
+  loading?: boolean;
+  error?: any;
+}
+
+export interface IUser {
+  user?: {
+    _id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    profilePic: string;
+    coverPic: string;
     likes: string[];
     retweets: string[];
     createdAt: string;
@@ -21,7 +40,7 @@ export interface IUserAuth {
 }
 
 export interface IPosts {
-  posts: [
+  posts?: [
     {
       _id: string;
       content: string;
@@ -35,6 +54,7 @@ export interface IPosts {
         firstName: string;
         lastName: string;
         profilePic: string;
+        coverPic: string;
       };
       retweetData: {
         _id: string;
@@ -49,6 +69,7 @@ export interface IPosts {
           firstName: string;
           lastName: string;
           profilePic: string;
+          coverPic: string;
         };
       };
       replyTo: {
@@ -64,12 +85,13 @@ export interface IPosts {
           firstName: string;
           lastName: string;
           profilePic: string;
+          coverPic: string;
         };
       };
     }
   ];
-  loading: boolean;
-  error: any;
+  loading?: boolean;
+  error?: any;
 }
 
 export interface IPost {
@@ -86,6 +108,7 @@ export interface IPost {
       firstName: string;
       lastName: string;
       profilePic: string;
+      coverPic: string;
     };
     retweetData: {
       _id: string;
@@ -100,6 +123,7 @@ export interface IPost {
         firstName: string;
         lastName: string;
         profilePic: string;
+        coverPic: string;
       };
     };
     replyTo: {
@@ -115,17 +139,23 @@ export interface IPost {
         firstName: string;
         lastName: string;
         profilePic: string;
+        coverPic: string;
       };
     };
   };
   liked?: boolean;
   retweeted?: boolean;
-  replied?: boolean;
   showModal?: boolean;
   setShowModal?: any;
 }
 
 export interface ICreatePost {
+  success?: boolean;
+  loading?: boolean;
+  error?: any;
+}
+
+export interface IDelete {
   success?: boolean;
   loading?: boolean;
   error?: any;
@@ -160,6 +190,7 @@ export interface IPostDetails {
       firstName: string;
       lastName: string;
       profilePic: string;
+      coverPic: string;
     };
     retweetData: {
       _id: string;
@@ -174,6 +205,7 @@ export interface IPostDetails {
         firstName: string;
         lastName: string;
         profilePic: string;
+        coverPic: string;
       };
     };
     replyTo: {
@@ -189,6 +221,7 @@ export interface IPostDetails {
         firstName: string;
         lastName: string;
         profilePic: string;
+        coverPic: string;
       };
     };
   };

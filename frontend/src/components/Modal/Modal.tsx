@@ -8,7 +8,7 @@ import React, {
 import { useDispatch, useSelector } from "react-redux";
 import { replyToPost } from "../../actions/postActions";
 import { reducerState } from "../../store";
-import timeDifference from "../../timeFunction";
+import { timeDifference } from "../../timeFunction";
 import { IPost, IUserAuth } from "../../types";
 import "./modal.scss";
 

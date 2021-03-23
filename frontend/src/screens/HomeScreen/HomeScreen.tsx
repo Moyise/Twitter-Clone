@@ -3,7 +3,7 @@ import "./homeScreen.scss";
 import PostCard from "../../components/PostCard/PostCard";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
-import { ICreatePost, IPostReply, IPosts, IUserAuth } from "../../types";
+import { ICreatePost, IPostReply, IPosts, IUserAuth, IDelete } from "../../types";
 import { useHistory } from "react-router";
 import { createPost, listPosts } from "../../actions/postActions";
 import { POST_CREATE_RESET } from "../../constants/postConstants";
@@ -27,6 +27,9 @@ const HomeScreen = () => {
   const postReply: IPostReply = useSelector((state: reducerState) => state.postReply);
   const { success: replySuccess } = postReply;
 
+  const postDelete: IDelete = useSelector((state: reducerState) => state.postDelete);
+  const { success: deleteSuccess } = postDelete;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,12 +39,12 @@ const HomeScreen = () => {
   }, [content]);
 
   useEffect(() => {
-    if (success || replySuccess) {
+    if (success || replySuccess || deleteSuccess) {
       dispatch({ type: POST_CREATE_RESET });
       dispatch(listPosts());
       setContent("");
     }
-  }, [success, dispatch, replySuccess]);
+  }, [success, dispatch, replySuccess, deleteSuccess]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -67,7 +70,7 @@ const HomeScreen = () => {
     <>
       <div className="homeScreen">
         <div className="homeContainer">
-          <div className="title">Home</div>
+          <p className="homeTitle">Home</p>
           <div className="newPost">
             <div className="left">
               <img src={userInfo?.profilePic} alt="profile" />

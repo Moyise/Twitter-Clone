@@ -14,6 +14,7 @@ export const typeDefs = gql`
     email: String!
     password: String!
     profilePic: String!
+    coverPic: String!
   }
 
   type Mutation {

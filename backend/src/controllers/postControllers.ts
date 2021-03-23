@@ -74,6 +74,7 @@ export const likePost = async (req: Request, res: Response) => {
         lastName: user.lastName,
         email: user.email,
         profilePic: user.profilePic,
+        coverPic: user.coverPic,
         token: generateToken(user._id),
         likes: user.likes,
       });
@@ -128,6 +129,7 @@ export const retweetPost = async (req: Request, res: Response) => {
         lastName: user.lastName,
         email: user.email,
         profilePic: user.profilePic,
+        coverPic: user.coverPic,
         token: generateToken(user._id),
         likes: user.likes,
         retweets: user.retweets,
@@ -168,6 +170,47 @@ export const getPostById = async (req: Request, res: Response) => {
 
     if (post) {
       res.json(post);
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Post not found" });
+  }
+};
+
+// @desc Delete a post
+// @route DELETE /api/posts/:id
+// @access Private
+
+export const deletePost = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const post = await Post.findById(id);
+    if (post) {
+      await post.remove();
+      res.json({ message: "Tweet removed" });
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Tweet not found" });
+  }
+};
+
+//@desc Fetch all user posts
+//@route GET /api/post/profile/:id
+//@access Public
+
+export const getPostsByUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const posts = await Post.find({ user: id })
+      .populate("user")
+      .populate("retweetData")
+      .populate("replyTo")
+      .sort({ createdAt: -1 });
+
+    await User.populate(posts, { path: "replyTo.user" });
+    await User.populate(posts, { path: "retweetData.user" });
+
+    if (posts) {
+      res.json(posts);
     }
   } catch (error) {
     res.status(404).json({ message: "Post not found" });

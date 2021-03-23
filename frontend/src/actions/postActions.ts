@@ -18,6 +18,12 @@ import {
   POST_DETAILS_REQUEST,
   POST_DETAILS_SUCCESS,
   POST_DETAILS_FAIL,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_FAIL,
+  POSTS_USER_REQUEST,
+  POSTS_USER_SUCCESS,
+  POSTS_USER_FAIL,
 } from "../constants/postConstants";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
 
@@ -176,6 +182,66 @@ export const detailsPost = (id: string) => async (dispatch: any) => {
   } catch (error) {
     dispatch({
       type: POST_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deletePost = (id: string) => async (dispatch: any, getState: any) => {
+  try {
+    dispatch({ type: POST_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/posts/${id}`, config);
+
+    dispatch({ type: POST_DELETE_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: POST_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const userPosts = (id: string) => async (dispatch: any, getState: any) => {
+  try {
+    dispatch({ type: POSTS_USER_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/posts/profile/${id}`, config);
+
+    dispatch({
+      type: POSTS_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: POSTS_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

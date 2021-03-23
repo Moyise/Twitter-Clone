@@ -12,7 +12,9 @@
 
 body {
   font-family: "Poppins", sans-serif;
+  font-style: normal;
   background-color: #000000;
+
   &::-webkit-scrollbar {
     width: 8px;
   }

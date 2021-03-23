@@ -8,6 +8,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   profilePic: string;
+  coverPic: string;
   likes: object[];
   retweets: object[];
   createdAt?: any;
@@ -18,10 +19,11 @@ const userSchema: Schema<IUser> = new Schema(
   {
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
-    username: { type: String, required: true, trim: true, unique: true },
+    username: { type: String, required: true, trim: true, unique: true, lowerCase: true },
     email: { type: String, required: true, trim: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     profilePic: { type: String, default: "/images/profile.png" },
+    coverPic: { type: String, default: "/images/cover.png" },
     likes: [{ type: Types.ObjectId, ref: "Post" }],
     retweets: [{ type: Types.ObjectId, ref: "Post" }],
   },

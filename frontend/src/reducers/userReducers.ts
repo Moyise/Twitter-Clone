@@ -1,4 +1,7 @@
 import {
+  USER_DETAILS_FAIL,
+  USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -34,6 +37,22 @@ export const userRegisterReducer = (state = {}, { type, payload }: IAction) => {
       return { loading: false, error: payload };
     case USER_LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userDetailsReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case USER_DETAILS_REQUEST:
+      return { ...state, loading: true };
+
+    case USER_DETAILS_SUCCESS:
+      return { loading: false, user: payload };
+
+    case USER_DETAILS_FAIL:
+      return { loading: false, error: payload };
+
     default:
       return state;
   }

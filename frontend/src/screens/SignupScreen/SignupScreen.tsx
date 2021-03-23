@@ -28,7 +28,7 @@ const SignupScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/");
+      history.push("/home");
     }
   }, [userInfo, history]);
 
@@ -47,7 +47,15 @@ const SignupScreen = () => {
         setMessage("Passwords do not match");
       } else {
         //DISPATCH_SIGNUP
-        dispatch(register(firstName, lastName, username, email.toLowerCase(), password));
+        dispatch(
+          register(
+            firstName,
+            lastName,
+            username.toLowerCase(),
+            email.toLowerCase(),
+            password
+          )
+        );
       }
     } else {
       setMessage("Make sure each field has a valid value.");

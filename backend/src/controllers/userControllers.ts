@@ -10,6 +10,7 @@ import generateToken from "../utils/generateToken";
 export const authUser = async (req: Request, res: Response) => {
   try {
     const { usOrEmail, password } = req.body;
+    console.log(req.body);
 
     const user = await User.findOne({
       $or: [{ email: usOrEmail }, { username: usOrEmail }],
@@ -25,6 +26,7 @@ export const authUser = async (req: Request, res: Response) => {
           lastName: user.lastName,
           email: user.email,
           profilePic: user.profilePic,
+          coverPic: user.coverPic,
           token: generateToken(user._id),
           likes: user.likes,
           createdAt: user.createdAt,
@@ -74,15 +76,34 @@ export const registerUser = async (req: Request, res: Response) => {
         lastName: user.lastName,
         email: user.email,
         profilePic: user.profilePic,
+        coverPic: user.coverPic,
         token: generateToken(user._id),
         likes: user.likes,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
+      console.log(user);
     } else {
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
     res.status(401).json({ message: error.message });
+  }
+};
+
+//@desc Fetch single user
+//@route GET /api/users/profile/:id
+//@access Private
+
+export const getUserById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id);
+
+    if (user) {
+      res.json(user);
+    }
+  } catch (error) {
+    res.status(404).json({ message: "User not found" });
   }
 };

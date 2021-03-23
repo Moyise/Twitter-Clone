@@ -1,0 +1,25 @@
+.loadingScreen {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  .loadingContainer {
+    max-width: 1350px;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 200px;
+    .loading {
+      width: 200px;
+      height: 200px;
+      background: #1a91da;
+      box-shadow: 2px -2px 10px rgba(26, 145, 218, 0.3),
+        -2px 2px 10px rgba(26, 145, 218, 0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

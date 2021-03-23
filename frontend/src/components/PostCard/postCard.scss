@@ -3,6 +3,7 @@
   min-height: 100px;
   padding: 15px 15px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
   cursor: pointer;
   .postCardTop {
     display: flex;
@@ -152,13 +153,53 @@
         }
       }
     }
+
     .right {
-      svg {
-        cursor: pointer;
-        border-radius: 20px;
-        &:hover {
-          background: rgba(0, 133, 255, 0.1);
+      position: relative;
+      .icon {
+        svg {
+          cursor: pointer;
+          border-radius: 20px;
+          &:hover {
+            background: rgba(0, 133, 255, 0.1);
+          }
         }
+      }
+      .miniMenu {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background: #000000;
+        box-shadow: 0px -2px 10px rgba(255, 255, 255, 0.1),
+          0px 2px 10px rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        width: 200px;
+        min-height: 50px;
+        z-index: 12;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.3s;
+        .link {
+          display: flex;
+          align-items: center;
+          padding: 14px 10px;
+          cursor: pointer;
+          .text {
+            font-weight: 300;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 10px;
+          }
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+          }
+        }
+      }
+      .miniMenu.open {
+        top: 0;
+        visibility: visible;
+        opacity: 1;
+        transition: 0.3s;
       }
     }
   }
