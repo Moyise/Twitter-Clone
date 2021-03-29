@@ -18,7 +18,6 @@ export const resolvers = {
         email,
         password,
       });
-      console.log(user);
       return user;
     },
   },

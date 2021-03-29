@@ -14,6 +14,41 @@ export interface IUserAuth {
     coverPic: string;
     likes: string[];
     retweets: string[];
+    isVerified: boolean;
+    bio: string;
+    website: string;
+    following: [
+      {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        following: string[];
+        followers: string[];
+      }
+    ];
+    followers: [
+      {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        following: string[];
+        followers: string[];
+      }
+    ];
     createdAt: string;
     updatedAt: string;
   };
@@ -31,12 +66,49 @@ export interface IUser {
     profilePic: string;
     coverPic: string;
     likes: string[];
+    isVerified: boolean;
     retweets: string[];
+    bio: string;
+    website: string;
+    following: [
+      {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        following: string[];
+        followers: string[];
+      }
+    ];
+    followers: [
+      {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        following: string[];
+        followers: string[];
+      }
+    ];
     createdAt: string;
     updatedAt: string;
   };
   loading?: boolean;
   error?: any;
+  showModal?: boolean;
+  setShowModal?: any;
 }
 
 export interface IPosts {
@@ -225,4 +297,16 @@ export interface IPostDetails {
       };
     };
   };
+}
+
+export interface IFollow {
+  follow?: any;
+  followButton?: string;
+  setFollowButton?: any;
+  following?: boolean[];
+  onClick(event: any): void;
+}
+
+export interface IProfileUpdate {
+  success?: boolean;
 }

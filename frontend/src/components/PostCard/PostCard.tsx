@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import "./postCard.scss";
-import { IPost, ILike, IUserAuth } from "../../types";
+import { IPost, IUserAuth } from "../../types";
 import { timeDifference } from "../../timeFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
@@ -20,6 +20,9 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
+
+  // const following = userInfo?.following.map((user) => user._id).includes(post?.user._id);
+  // console.log(following);
 
   useEffect(() => {
     document.body.addEventListener("click", (e: any) => {
@@ -98,7 +101,7 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
               </p>
             </Link>
             <p onClick={postLinkHandler} className="middleBottom">
-              {post.content || post.retweetData.content}
+              {post?.content || post.retweetData?.content}
             </p>
             <div className="bottom">
               <div className="left-c" onClick={() => setShowModal(!showModal)}>

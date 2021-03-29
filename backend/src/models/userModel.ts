@@ -11,6 +11,11 @@ interface IUser extends Document {
   coverPic: string;
   likes: object[];
   retweets: object[];
+  following: object[];
+  followers: object[];
+  isVerified: boolean;
+  bio: string;
+  website: string;
   createdAt?: any;
   updatedAt?: any;
 }
@@ -26,6 +31,11 @@ const userSchema: Schema<IUser> = new Schema(
     coverPic: { type: String, default: "/images/cover.png" },
     likes: [{ type: Types.ObjectId, ref: "Post" }],
     retweets: [{ type: Types.ObjectId, ref: "Post" }],
+    following: [{ type: Types.ObjectId, ref: "User" }],
+    followers: [{ type: Types.ObjectId, ref: "User" }],
+    isVerified: { type: Boolean, required: true, default: false },
+    bio: { type: String, trim: true },
+    website: { type: String, trim: true },
   },
   {
     timestamps: true,

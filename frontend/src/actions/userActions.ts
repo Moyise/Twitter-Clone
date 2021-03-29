@@ -10,6 +10,14 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_FOLLOW_REQUEST,
+  USER_FOLLOW_SUCCESS,
+  USER_FOLLOW_FAIL,
+  USER_PROFILE_UPDATE_REQUEST,
+  USER_PROFILE_UPDATE_SUCCESS,
+  USER_DETAILS_RESET,
+  USER_PROFILE_UPDATE_FAIL,
+  USER_PROFILE_UPDATE_RESET,
 } from "../constants/userConstants";
 
 export const login = (usOrEmail: string, password: string) => async (dispatch: any) => {
@@ -125,6 +133,83 @@ export const detailsUser = (id: string) => async (dispatch: any, getState: any) 
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+    });
+  }
+};
+
+export const followUser = (id: string, userId: string) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: USER_FOLLOW_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/${id}/follow`, { userId }, config);
+
+    dispatch({ type: USER_FOLLOW_SUCCESS });
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_FOLLOW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateProfile = (user: object) => async (dispatch: any, getState: any) => {
+  try {
+    dispatch({
+      type: USER_PROFILE_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/profile`, user, config);
+
+    dispatch({
+      type: USER_PROFILE_UPDATE_SUCCESS,
+    });
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    dispatch({ type: USER_DETAILS_RESET });
+    dispatch({ type: USER_PROFILE_UPDATE_RESET });
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_PROFILE_UPDATE_FAIL,
+      payload: message,
     });
   }
 };

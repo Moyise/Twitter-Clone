@@ -10,11 +10,12 @@ import generateToken from "../utils/generateToken";
 export const authUser = async (req: Request, res: Response) => {
   try {
     const { usOrEmail, password } = req.body;
-    console.log(req.body);
 
     const user = await User.findOne({
       $or: [{ email: usOrEmail }, { username: usOrEmail }],
-    });
+    })
+      .populate("followers")
+      .populate("following");
 
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user?.password);
@@ -27,8 +28,14 @@ export const authUser = async (req: Request, res: Response) => {
           email: user.email,
           profilePic: user.profilePic,
           coverPic: user.coverPic,
+          following: user.following,
+          followers: user.followers,
           token: generateToken(user._id),
           likes: user.likes,
+          isVerified: user.isVerified,
+          bio: user.bio,
+          website: user.website,
+          retweets: user.retweets,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         });
@@ -77,8 +84,14 @@ export const registerUser = async (req: Request, res: Response) => {
         email: user.email,
         profilePic: user.profilePic,
         coverPic: user.coverPic,
+        following: user.following,
+        followers: user.followers,
         token: generateToken(user._id),
         likes: user.likes,
+        retweets: user.retweets,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
@@ -98,12 +111,129 @@ export const registerUser = async (req: Request, res: Response) => {
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("followers").populate("following");
 
     if (user) {
-      res.json(user);
+      res.json({
+        _id: user._id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profilePic: user.profilePic,
+        coverPic: user.coverPic,
+        following: user.following,
+        followers: user.followers,
+        likes: user.likes,
+        retweets: user.retweets,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
     }
   } catch (error) {
     res.status(404).json({ message: "User not found" });
+  }
+};
+
+//@desc Follow user
+//@route PUT /api/users/:id/follow
+//@access Private
+
+export const followUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const userId = req.body.user.id;
+
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isFollowing = user.followers && user.followers.includes(userId);
+    const option = isFollowing ? "$pull" : "$addToSet";
+
+    await User.findByIdAndUpdate(id, { [option]: { followers: userId } });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        [option]: { following: id },
+      },
+      { new: true }
+    )
+      .populate("followers")
+      .populate("following");
+
+    if (updatedUser) {
+      res.json({
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        profilePic: updatedUser.profilePic,
+        coverPic: updatedUser.coverPic,
+        following: updatedUser.following,
+        followers: updatedUser.followers,
+        token: generateToken(updatedUser._id),
+        likes: updatedUser.likes,
+        retweets: updatedUser.retweets,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
+        createdAt: updatedUser.createdAt,
+        updatedAt: updatedUser.updatedAt,
+      });
+    }
+  } catch (error) {
+    res.status(404).json({ message: "User not found" });
+  }
+};
+
+// @desc Update profile
+// @route PUT /api/users/profile
+// @access private
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+    const user = await User.findById(id);
+
+    if (user) {
+      user.firstName = req.body.name || user.firstName;
+      user.profilePic = req.body.profilePic || user.profilePic;
+      user.coverPic = req.body.coverPic || user.coverPic;
+      user.bio = req.body.bio || user.bio;
+      user.website = req.body.website || user.website;
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        profilePic: updatedUser.profilePic,
+        coverPic: updatedUser.coverPic,
+        following: updatedUser.following,
+        followers: updatedUser.followers,
+        token: generateToken(updatedUser._id),
+        likes: updatedUser.likes,
+        retweets: updatedUser.retweets,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
+        createdAt: updatedUser.createdAt,
+        updatedAt: updatedUser.updatedAt,
+      });
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Can't update profile" });
   }
 };

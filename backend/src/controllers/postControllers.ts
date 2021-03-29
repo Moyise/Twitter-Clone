@@ -9,7 +9,33 @@ import User from "../models/userModel";
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    let posts = await Post.find()
+    // const followingArr: string[] = req.body.user.following;
+    // const id = req.body.user._id;
+    // const userArr = [...followingArr, id];
+    // console.log(userArr);
+    // const newPosts = await Post.find({
+    //   user: { $all: [`${userArr}`] },
+    // });
+
+    //console.log(newPosts);
+    // let results: any;
+    // userArr.forEach(async (userId) => {
+    //   //let results: object[] = [];
+    //   const test1 = await Post.find({
+    //     user: { $all: [`${userId}`] },
+    //   });
+    //console.log(test1);
+
+    // results.push(test1);
+    // });
+    //console.log(results);
+
+    // userArr.forEach(async (user) => {
+    //   const newPosts = await Post.find({ user: { $all: [`${user}`] } });
+    //   console.log(newPosts);
+    // });
+
+    const posts = await Post.find()
       .populate("user")
       .populate("retweetData")
       .populate("replyTo")
@@ -75,8 +101,15 @@ export const likePost = async (req: Request, res: Response) => {
         email: user.email,
         profilePic: user.profilePic,
         coverPic: user.coverPic,
-        token: generateToken(user._id),
+        following: user.following,
+        followers: user.followers,
         likes: user.likes,
+        retweets: user.retweets,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       });
     }
   } catch (error) {
@@ -130,9 +163,16 @@ export const retweetPost = async (req: Request, res: Response) => {
         email: user.email,
         profilePic: user.profilePic,
         coverPic: user.coverPic,
+        following: user.following,
+        followers: user.followers,
         token: generateToken(user._id),
         likes: user.likes,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        website: user.website,
         retweets: user.retweets,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       });
     }
   } catch (error) {

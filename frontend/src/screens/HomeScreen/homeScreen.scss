@@ -1,6 +1,7 @@
 .homeScreen {
   max-width: 650px;
   width: 100%;
+  min-height: 100vh;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
@@ -29,7 +30,7 @@
           width: 48px;
           height: 48px;
           border-radius: 100px;
-          object-fit: contain;
+          object-fit: cover;
         }
       }
       .right {

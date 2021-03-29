@@ -1,0 +1,86 @@
+.followsScreen {
+  max-width: 650px;
+  width: 100%;
+  min-height: 100vh;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  .followsContainer {
+    .topDetails {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      background-color: #000000;
+      padding: 4px 15px;
+      z-index: 999;
+      .title {
+        font-style: normal;
+        padding-left: 30px;
+        display: flex;
+        flex-direction: column;
+        .username {
+          font-weight: 900;
+          font-size: 18px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .tweets {
+          font-weight: 300;
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.4);
+        }
+      }
+      .icon {
+        svg {
+          cursor: pointer;
+          border-radius: 20px;
+          &:hover {
+            background: rgba(0, 133, 255, 0.1);
+          }
+        }
+      }
+    }
+    .blockTabs {
+      display: flex;
+      align-items: center;
+
+      .tabLeft,
+      .tabRight {
+        height: 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        p {
+          font-weight: bold;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.4);
+          margin: auto;
+        }
+        &:hover {
+          background: #1a85c76c;
+          p {
+            color: #1a91da;
+          }
+        }
+      }
+      .tabLeft.active,
+      .tabRight.active {
+        border-bottom: 2px solid #1a85c7;
+        p {
+          color: #1a91da;
+        }
+      }
+    }
+    .tabsContent {
+      .content {
+        color: rgba(255, 255, 255, 0.4);
+        display: none;
+      }
+      .content.active {
+        display: block;
+      }
+    }
+  }
+}

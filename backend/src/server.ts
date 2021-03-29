@@ -8,6 +8,7 @@ import { typeDefs } from "./config/typeDefs";
 import { resolvers } from "./config/resolvers";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 dotenv.config();
 connectDB();
@@ -27,6 +28,7 @@ server.applyMiddleware({ app });
 // Api routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/upload", uploadRoutes);
 
 //
 

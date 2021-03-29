@@ -8,6 +8,7 @@ import "./app.scss";
 import PostScreen from "./screens/PostScreen/PostScreen";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
+import FollowsScreen from "./screens/FollowsScreen/FollowsScreen";
 
 function App() {
   return (
@@ -26,6 +27,13 @@ function App() {
             <div className="app">
               <Sidebar />
               <PostScreen />
+            </div>
+          </Route>
+
+          <Route path="/profile/:id/:follows" exact>
+            <div className="app">
+              <Sidebar />
+              <FollowsScreen />
             </div>
           </Route>
 
