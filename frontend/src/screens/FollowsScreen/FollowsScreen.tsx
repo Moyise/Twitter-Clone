@@ -29,6 +29,7 @@ const FollowsScreen = () => {
   const route = match.params.follows;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!userInfo) {
       history.push("/login");
     }
@@ -53,39 +54,43 @@ const FollowsScreen = () => {
       <div className="followsScreen">
         <div className="followsContainer">
           <div className="topDetails">
-            <div className="icon" onClick={() => history.push(`/profile/${id}`)}>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="topTop">
+              <div className="icon" onClick={() => history.push(`/profile/${id}`)}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.83 11L11.41 7.41L10 6L4 12L10 18L11.41 16.59L7.83 13H20V11H7.83Z"
+                    fill="#1A91DA"
+                  />
+                </svg>
+              </div>
+              <p className="title">
+                <span className="username">{user?.firstName}</span>
+                <span className="tweets">@{user?.username}</span>
+              </p>
+            </div>
+
+            <div className="blockTabs">
+              <div
+                className={toggleTab === 1 ? "tabLeft active" : "tabLeft"}
+                onClick={() => history.replace(`/profile/${id}/followers`)}
               >
-                <path
-                  d="M7.83 11L11.41 7.41L10 6L4 12L10 18L11.41 16.59L7.83 13H20V11H7.83Z"
-                  fill="#1A91DA"
-                />
-              </svg>
-            </div>
-            <p className="title">
-              <span className="username">{user?.firstName}</span>
-              <span className="tweets">@{user?.username}</span>
-            </p>
-          </div>
-          <div className="blockTabs">
-            <div
-              className={toggleTab === 1 ? "tabLeft active" : "tabLeft"}
-              onClick={() => history.replace(`/profile/${id}/followers`)}
-            >
-              <p>Followers</p>
-            </div>
-            <div
-              className={toggleTab === 2 ? "tabRight active" : "tabRight"}
-              onClick={() => history.replace(`/profile/${id}/following`)}
-            >
-              <p>Following</p>
+                <p>Followers</p>
+              </div>
+              <div
+                className={toggleTab === 2 ? "tabRight active" : "tabRight"}
+                onClick={() => history.replace(`/profile/${id}/following`)}
+              >
+                <p>Following</p>
+              </div>
             </div>
           </div>
+
           <div className="tabsContent">
             <div className={toggleTab === 1 ? "content active" : "content"}>
               {user?.followers.map((follow, index) => (

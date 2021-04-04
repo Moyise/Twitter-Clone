@@ -18,6 +18,11 @@ import {
   USER_DETAILS_RESET,
   USER_PROFILE_UPDATE_FAIL,
   USER_PROFILE_UPDATE_RESET,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
+  USER_SELECT_ADD,
+  USER_SELECT_REMOVE,
 } from "../constants/userConstants";
 
 export const login = (usOrEmail: string, password: string) => async (dispatch: any) => {
@@ -212,4 +217,60 @@ export const updateProfile = (user: object) => async (dispatch: any, getState: a
       payload: message,
     });
   }
+};
+
+export const getUsers = (keyword: string = "") => async (dispatch: any) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(`/api/users?keyword=${keyword}`, config);
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const selectUser = (id: string) => async (dispatch: any, getState: any) => {
+  const { data } = await axios.get(`/api/users/${id}`);
+
+  dispatch({
+    type: USER_SELECT_ADD,
+    payload: data,
+  });
+
+  localStorage.setItem(
+    "selectedUser",
+    JSON.stringify(getState().userSelect.selectedUser)
+  );
+};
+
+export const deselectUser = (id: string) => (dispatch: any, getState: any) => {
+  dispatch({
+    type: USER_SELECT_REMOVE,
+    payload: id,
+  });
+
+  localStorage.setItem(
+    "selectedUser",
+    JSON.stringify(getState().userSelect.selectedUser)
+  );
 };

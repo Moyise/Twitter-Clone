@@ -2,11 +2,13 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
+  selectUserReducer,
   userDetailsReducer,
   userFollowReducer,
   userLoginReducer,
   userProfileUpdateReducer,
   userRegisterReducer,
+  usersListReducer,
 } from "./reducers/userReducers";
 import {
   postLikeReducer,
@@ -17,7 +19,9 @@ import {
   postDetailsReducer,
   postDeleteReducer,
   postsUserReducer,
+  postPinReducer,
 } from "./reducers/postReducers";
+import { chatCreateReducer } from "./reducers/chatReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -25,6 +29,8 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userFollow: userFollowReducer,
   userProfileUpdate: userProfileUpdateReducer,
+  usersList: usersListReducer,
+  userSelect: selectUserReducer,
   postList: postListReducer,
   postCreate: postCreateReducer,
   postLike: postLikeReducer,
@@ -33,14 +39,21 @@ const reducer = combineReducers({
   postDetails: postDetailsReducer,
   postDelete: postDeleteReducer,
   postsUser: postsUserReducer,
+  postPin: postPinReducer,
+  chatCreate: chatCreateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo")!)
   : null;
 
+const userSelectFromStorage = localStorage.getItem("selectedUser")
+  ? JSON.parse(localStorage.getItem("selectedUser")!)
+  : [];
+
 const initialState: any = {
   userLogin: { userInfo: userInfoFromStorage },
+  userSelect: { selectedUser: userSelectFromStorage },
 };
 
 const middleware = [thunk];

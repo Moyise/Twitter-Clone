@@ -6,6 +6,7 @@ import {
   getPosts,
   getPostsByUser,
   likePost,
+  pinPost,
   replyToPost,
   retweetPost,
 } from "../controllers/postControllers";
@@ -19,6 +20,6 @@ router.route("/:id").delete(protect, deletePost);
 router.route("/:id/like").put(likePost);
 router.route("/:id/retweet").post(retweetPost);
 router.route("/:id/reply").post(protect, replyToPost);
-router.route("/profile/:id").get(protect, getPostsByUser);
+router.route("/profile/:id").get(protect, getPostsByUser).put(protect, pinPost);
 
 export default router;

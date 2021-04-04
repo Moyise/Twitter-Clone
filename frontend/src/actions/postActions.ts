@@ -24,10 +24,16 @@ import {
   POSTS_USER_REQUEST,
   POSTS_USER_SUCCESS,
   POSTS_USER_FAIL,
+  POST_PIN_REQUEST,
+  POST_PIN_SUCCESS,
+  POST_PIN_FAIL,
 } from "../constants/postConstants";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
 
-export const listPosts = () => async (dispatch: any, getState: any) => {
+export const listPosts = (keyword: string = "") => async (
+  dispatch: any,
+  getState: any
+) => {
   try {
     dispatch({ type: POST_LIST_REQUEST });
     const {
@@ -39,7 +45,7 @@ export const listPosts = () => async (dispatch: any, getState: any) => {
       },
     };
 
-    const { data } = await axios.get("/api/posts", config);
+    const { data } = await axios.get(`/api/posts?keyword=${keyword}`, config);
 
     dispatch({ type: POST_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -242,6 +248,38 @@ export const userPosts = (id: string) => async (dispatch: any, getState: any) =>
   } catch (error) {
     dispatch({
       type: POSTS_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const pinPost = (id: string, post: object) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: POST_PIN_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.put(`/api/posts/profile/${id}`, { post }, config);
+
+    dispatch({ type: POST_PIN_SUCCESS });
+    //dispatch({ type: POST_PIN_RESET });
+  } catch (error) {
+    dispatch({
+      type: POST_PIN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

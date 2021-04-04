@@ -3,7 +3,7 @@ import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import "./profileScreen.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { IPosts, IUser, IUserAuth } from "../../types";
+import { IPinPost, IPosts, IUser, IUserAuth } from "../../types";
 import { reducerState } from "../../store";
 import { detailsUser, followUser } from "../../actions/userActions";
 import { userDate } from "../../timeFunction";
@@ -11,6 +11,7 @@ import { userPosts } from "../../actions/postActions";
 import { POSTS_USER_RESET } from "../../constants/postConstants";
 import PostCard from "../../components/PostCard/PostCard";
 import EditProfile from "../../components/EditProfile/EditProfile";
+import PinPost from "../../components/PinPost/PinPost";
 
 interface IParams {
   id: string;
@@ -35,6 +36,9 @@ const ProfileScreen = () => {
   const postsUser: IPosts = useSelector((state: reducerState) => state.postsUser);
   const { posts } = postsUser;
 
+  const postPin: IPinPost = useSelector((state: reducerState) => state.postPin);
+  const { success } = postPin;
+
   const id = match.params.id;
 
   const tweets = posts?.filter((post) => {
@@ -43,6 +47,10 @@ const ProfileScreen = () => {
 
   const replies = posts?.filter((post) => {
     return post.replyTo;
+  });
+
+  const pinnedPost = posts?.filter((post) => {
+    return post.pinned === true;
   });
 
   const following = userInfo?.following.map((follow) => follow._id).includes(user?._id!);
@@ -55,7 +63,7 @@ const ProfileScreen = () => {
     dispatch({ type: POSTS_USER_RESET });
     dispatch(detailsUser(id));
     dispatch(userPosts(id));
-  }, [dispatch, userInfo, history, id]);
+  }, [dispatch, userInfo, history, id, success]);
 
   const followHandler = () => {
     if (userInfo) {
@@ -206,6 +214,25 @@ const ProfileScreen = () => {
               <p>Replies</p>
             </div>
           </div>
+          {pinnedPost && (
+            <div>
+              {pinnedPost?.map((post) => (
+                <PinPost
+                  key={post._id}
+                  post={post}
+                  liked={
+                    post.likes.includes(userInfo?._id!) ||
+                    post.retweetData?.likes.includes(userInfo?._id!)
+                  }
+                  retweeted={
+                    post.retweetUsers.includes(userInfo?._id!) ||
+                    post.retweetData?.retweetUsers.includes(userInfo?._id!)
+                  }
+                />
+              ))}
+            </div>
+          )}
+
           <div className="tabsContent">
             <div className={toggleTab === 1 ? "content active" : "content"}>
               {tweets?.map((post) => (

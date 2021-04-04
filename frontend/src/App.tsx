@@ -9,6 +9,9 @@ import PostScreen from "./screens/PostScreen/PostScreen";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
 import FollowsScreen from "./screens/FollowsScreen/FollowsScreen";
+import RightBar from "./components/RightBar/RightBar";
+import SearchScreen from "./screens/SearchScreen/SearchScreen";
+import MessagesScreen from "./screens/MessagesScreen/MessagesScreen";
 
 function App() {
   return (
@@ -23,10 +26,26 @@ function App() {
             <SignupScreen />
           </Route>
 
+          <Route path="/messages" exact>
+            <div className="app">
+              <Sidebar />
+              <MessagesScreen />
+            </div>
+          </Route>
+
           <Route path="/posts/:id" exact>
             <div className="app">
               <Sidebar />
               <PostScreen />
+              <RightBar />
+            </div>
+          </Route>
+
+          <Route path="/search/:keyword?/:posts" exact>
+            <div className="app">
+              <Sidebar />
+              <SearchScreen />
+              <RightBar />
             </div>
           </Route>
 
@@ -34,6 +53,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <FollowsScreen />
+              <RightBar />
             </div>
           </Route>
 
@@ -41,6 +61,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <ProfileScreen />
+              <RightBar />
             </div>
           </Route>
 
@@ -48,6 +69,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <HomeScreen />
+              <RightBar />
             </div>
           </Route>
 

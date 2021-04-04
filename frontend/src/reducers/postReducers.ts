@@ -26,6 +26,11 @@ import {
   POSTS_USER_SUCCESS,
   POSTS_USER_FAIL,
   POSTS_USER_RESET,
+  POST_PIN_REQUEST,
+  POST_PIN_SUCCESS,
+  POST_PIN_FAIL,
+  POST_PIN_RESET,
+  POST_LIST_RESET,
 } from "../constants/postConstants";
 import { IAction } from "../types";
 
@@ -39,6 +44,9 @@ export const postListReducer = (state = { posts: [] }, { type, payload }: IActio
 
     case POST_LIST_FAIL:
       return { loading: false, error: payload };
+
+    case POST_LIST_RESET:
+      return { posts: [] };
 
     default:
       return state;
@@ -157,6 +165,23 @@ export const postsUserReducer = (state = {}, { type, payload }: IAction) => {
       return { loading: false, error: payload };
 
     case POSTS_USER_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export const postPinReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case POST_PIN_REQUEST:
+      return { loading: true };
+    case POST_PIN_SUCCESS:
+      return { loading: false, success: true };
+    case POST_PIN_FAIL:
+      return { loading: false, error: payload };
+
+    case POST_PIN_RESET:
       return {};
 
     default:

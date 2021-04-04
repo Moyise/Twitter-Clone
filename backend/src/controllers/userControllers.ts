@@ -95,7 +95,6 @@ export const registerUser = async (req: Request, res: Response) => {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
-      console.log(user);
     } else {
       res.status(400).json({ message: "Invalid user data" });
     }
@@ -200,7 +199,7 @@ export const followUser = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const id = req.body.id;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("followers").populate("following");
 
     if (user) {
       user.firstName = req.body.name || user.firstName;
@@ -235,5 +234,29 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(404).json({ message: "Can't update profile" });
+  }
+};
+
+//@desc Fetch All users
+//@route GET /api/users
+//@access Private
+
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    const keyword: any = req.query.keyword
+      ? {
+          $or: [
+            { username: { $regex: req.query.keyword, $options: "i" } },
+            { firstName: { $regex: req.query.keyword, $options: "i" } },
+            { lastName: { $regex: req.query.keyword, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const users = await User.find({ ...keyword });
+
+    res.json(users);
+  } catch (error) {
+    res.status(404).json({ message: "Users Empty" });
   }
 };

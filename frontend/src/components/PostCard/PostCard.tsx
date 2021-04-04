@@ -4,13 +4,18 @@ import { IPost, IUserAuth } from "../../types";
 import { timeDifference } from "../../timeFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
-import { deletePost, likePost, retweetPost } from "../../actions/postActions";
+import { deletePost, likePost, pinPost, retweetPost } from "../../actions/postActions";
 import Modal from "../Modal/Modal";
-import { useHistory } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
+
+interface IParams {
+  id: string;
+}
 
 const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
   const history = useHistory();
+  const match = useRouteMatch<IParams>();
   const ref = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useDispatch();
@@ -23,6 +28,8 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
 
   // const following = userInfo?.following.map((user) => user._id).includes(post?.user._id);
   // console.log(following);
+
+  const id = match.params.id;
 
   useEffect(() => {
     document.body.addEventListener("click", (e: any) => {
@@ -52,6 +59,11 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
   const deleteHandler = () => {
     //    DELETE Post
     dispatch(deletePost(post._id));
+  };
+
+  const pinPostHandler = () => {
+    //    Pin Post
+    dispatch(pinPost(id, post));
   };
 
   return (
@@ -209,7 +221,7 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                     </svg>
                     <p className="text">Delete</p>
                   </li>
-                  <li className="link">
+                  <li className="link" onClick={pinPostHandler}>
                     <svg
                       width="20"
                       height="20"
@@ -226,29 +238,33 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                         strokeLinejoin="round"
                       />
                     </svg>
-
-                    <p className="text">Pin to your profile</p>
+                    {post.pinned ? (
+                      <p className="text">Unpin from profile</p>
+                    ) : (
+                      <p className="text">Pin to your profile</p>
+                    )}
                   </li>
                 </>
               )}
+              {userInfo?._id !== post.user._id && (
+                <li className="link">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.33334 15.8333H1.66667C1.66667 13.0719 3.90525 10.8333 6.66667 10.8333C9.4281 10.8333 11.6667 13.0719 11.6667 15.8333H10C10 13.9924 8.50762 12.5 6.66667 12.5C4.82572 12.5 3.33334 13.9924 3.33334 15.8333ZM15.8333 13.3333H14.1667V10.8333H11.6667V9.16665H14.1667V6.66665H15.8333V9.16665H18.3333V10.8333H15.8333V13.3333ZM6.66667 9.99998C4.82572 9.99998 3.33334 8.5076 3.33334 6.66665C3.33334 4.8257 4.82572 3.33331 6.66667 3.33331C8.50762 3.33331 10 4.8257 10 6.66665C9.99771 8.50664 8.50667 9.99768 6.66667 9.99998ZM6.66667 4.99998C5.75617 5.0009 5.01491 5.73235 5.00186 6.64276C4.98882 7.55317 5.70881 8.30557 6.61891 8.33258C7.52902 8.35959 8.29237 7.65123 8.33334 6.74165V7.07498V6.66665C8.33334 5.74617 7.58715 4.99998 6.66667 4.99998Z"
+                      fill="white"
+                      fillOpacity="0.9"
+                    />
+                  </svg>
 
-              <li className="link">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.33334 15.8333H1.66667C1.66667 13.0719 3.90525 10.8333 6.66667 10.8333C9.4281 10.8333 11.6667 13.0719 11.6667 15.8333H10C10 13.9924 8.50762 12.5 6.66667 12.5C4.82572 12.5 3.33334 13.9924 3.33334 15.8333ZM15.8333 13.3333H14.1667V10.8333H11.6667V9.16665H14.1667V6.66665H15.8333V9.16665H18.3333V10.8333H15.8333V13.3333ZM6.66667 9.99998C4.82572 9.99998 3.33334 8.5076 3.33334 6.66665C3.33334 4.8257 4.82572 3.33331 6.66667 3.33331C8.50762 3.33331 10 4.8257 10 6.66665C9.99771 8.50664 8.50667 9.99768 6.66667 9.99998ZM6.66667 4.99998C5.75617 5.0009 5.01491 5.73235 5.00186 6.64276C4.98882 7.55317 5.70881 8.30557 6.61891 8.33258C7.52902 8.35959 8.29237 7.65123 8.33334 6.74165V7.07498V6.66665C8.33334 5.74617 7.58715 4.99998 6.66667 4.99998Z"
-                    fill="white"
-                    fillOpacity="0.9"
-                  />
-                </svg>
-
-                <p className="text">Follow</p>
-              </li>
+                  <p className="text">Follow</p>
+                </li>
+              )}
             </ul>
           </div>
         </div>

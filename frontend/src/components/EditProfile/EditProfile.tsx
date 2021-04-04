@@ -63,7 +63,7 @@ const EditProfile: FunctionComponent<IUser> = ({ user, showModal, setShowModal }
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress, userInfo, history, user, success, setShowModal]);
 
-  const closeModal = (e: any) => {
+  const closeModal = (e: React.MouseEvent<HTMLDivElement>) => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }

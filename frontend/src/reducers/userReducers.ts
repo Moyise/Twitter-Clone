@@ -5,6 +5,9 @@ import {
   USER_FOLLOW_FAIL,
   USER_FOLLOW_REQUEST,
   USER_FOLLOW_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -16,6 +19,9 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_SELECT_ADD,
+  USER_SELECT_REMOVE,
+  USER_SELECT_RESET,
 } from "../constants/userConstants";
 import { IAction } from "../types";
 
@@ -91,6 +97,58 @@ export const userProfileUpdateReducer = (state = {}, { type, payload }: IAction)
       return { loading: false, error: payload };
     case USER_PROFILE_UPDATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const usersListReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case USER_LIST_REQUEST:
+      return { loading: true };
+
+    case USER_LIST_SUCCESS:
+      return { loading: false, users: payload };
+
+    case USER_LIST_FAIL:
+      return { loading: false, error: payload };
+
+    default:
+      return state;
+  }
+};
+
+export const selectUserReducer = (
+  state = { selectedUser: [] },
+  { type, payload }: IAction
+) => {
+  switch (type) {
+    case USER_SELECT_ADD:
+      const user = payload;
+      const existUser: any = state.selectedUser.find((x: any) => x._id === user._id);
+
+      if (existUser) {
+        return {
+          ...state,
+          selectedUser: state.selectedUser.map((x: any) =>
+            x._id === existUser._id ? user : x
+          ),
+        };
+      } else {
+        return { ...state, selectedUser: [...state.selectedUser, user] };
+      }
+
+    case USER_SELECT_REMOVE:
+      return {
+        ...state,
+        selectedUser: state.selectedUser.filter((x: any) => x._id !== payload),
+      };
+
+    case USER_SELECT_RESET:
+      return {
+        selectedUser: [],
+      };
+
     default:
       return state;
   }

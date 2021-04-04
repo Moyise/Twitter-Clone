@@ -111,6 +111,61 @@ export interface IUser {
   setShowModal?: any;
 }
 
+export interface IUsers {
+  users?: [
+    {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      isVerified: boolean;
+      retweets: string[];
+      bio: string;
+      website: string;
+      following: [
+        {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          following: string[];
+          followers: string[];
+        }
+      ];
+      followers: [
+        {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          following: string[];
+          followers: string[];
+        }
+      ];
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  loading?: boolean;
+  error?: any;
+}
+
 export interface IPosts {
   posts?: [
     {
@@ -301,6 +356,7 @@ export interface IPostDetails {
 
 export interface IFollow {
   follow?: any;
+  user?: any;
   followButton?: string;
   setFollowButton?: any;
   following?: boolean[];
@@ -309,4 +365,69 @@ export interface IFollow {
 
 export interface IProfileUpdate {
   success?: boolean;
+}
+
+export interface IPinPost {
+  success?: boolean;
+}
+
+export interface IUserMessage {
+  user?: any;
+  followButton?: string;
+  setFollowButton?: any;
+  following?: boolean[];
+  onClick(event: any): void;
+}
+
+export interface ISelectedUser {
+  selectedUser?: [
+    {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      isVerified: boolean;
+      retweets: string[];
+      bio: string;
+      website: string;
+      following: [
+        {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          following: string[];
+          followers: string[];
+        }
+      ];
+      followers: [
+        {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          following: string[];
+          followers: string[];
+        }
+      ];
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
 }

@@ -53,7 +53,7 @@ const Modal: FunctionComponent<IPost> = ({ post, showModal, setShowModal }) => {
     }
   };
 
-  const closeModal = (e: any) => {
+  const closeModal = (e: React.MouseEvent<HTMLDivElement>) => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }

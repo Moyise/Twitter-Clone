@@ -35,7 +35,11 @@ export const getPosts = async (req: Request, res: Response) => {
     //   console.log(newPosts);
     // });
 
-    const posts = await Post.find()
+    const keyword: any = req.query.keyword
+      ? { content: { $regex: req.query.keyword, $options: "i" } }
+      : {};
+
+    const posts = await Post.find({ ...keyword })
       .populate("user")
       .populate("retweetData")
       .populate("replyTo")
@@ -90,7 +94,9 @@ export const likePost = async (req: Request, res: Response) => {
       { new: true }
     );
     // Insert post like
-    await Post.findByIdAndUpdate(postId, { [option]: { likes: userId } }, { new: true });
+    await Post.findByIdAndUpdate(postId, { [option]: { likes: userId } }, { new: true })
+      .populate("followers")
+      .populate("following");
 
     if (user) {
       res.json({
@@ -108,6 +114,7 @@ export const likePost = async (req: Request, res: Response) => {
         isVerified: user.isVerified,
         bio: user.bio,
         website: user.website,
+        token: generateToken(user._id),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
@@ -146,7 +153,9 @@ export const retweetPost = async (req: Request, res: Response) => {
       userId,
       { [option]: { retweets: repost._id } },
       { new: true }
-    );
+    )
+      .populate("followers")
+      .populate("following");
     // Insert post retweet
     await Post.findByIdAndUpdate(
       postId,
@@ -251,6 +260,35 @@ export const getPostsByUser = async (req: Request, res: Response) => {
 
     if (posts) {
       res.json(posts);
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Post not found" });
+  }
+};
+
+//@desc Pin Post
+//@route PUT /api/post/profile/:id
+//@access Privet
+
+export const pinPost = async (req: Request, res: Response) => {
+  try {
+    const postId = req.body.post._id;
+    const id = req.params.id;
+
+    const existPost = await Post.findById(postId).populate("user");
+
+    if (req.body.post.pinned && existPost?.pinned === true) {
+      const post = await Post.findByIdAndUpdate(postId, { pinned: false }, { new: true });
+      if (post) {
+        res.json({ message: "Post Unpinned" });
+      }
+    } else {
+      await Post.updateMany({ user: id }, { pinned: false });
+      const post = await Post.findByIdAndUpdate(postId, { pinned: true }, { new: true });
+
+      if (post) {
+        res.json({ message: "Post Pinned" });
+      }
     }
   } catch (error) {
     res.status(404).json({ message: "Post not found" });

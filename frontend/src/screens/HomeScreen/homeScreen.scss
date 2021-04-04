@@ -1,10 +1,10 @@
 .homeScreen {
-  max-width: 650px;
+  max-width: 600px;
   width: 100%;
   min-height: 100vh;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
-  overflow: hidden;
+
   .homeContainer {
     .homeTitle {
       position: sticky;
