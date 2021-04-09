@@ -3,38 +3,36 @@ import generateToken from "../utils/generateToken";
 import Post from "../models/postModel";
 import User from "../models/userModel";
 
-// @Fetch all posts
+// @Fetch all followed users posts
 // @route GET /api/posts
 // @access Public
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    // const followingArr: string[] = req.body.user.following;
-    // const id = req.body.user._id;
-    // const userArr = [...followingArr, id];
-    // console.log(userArr);
-    // const newPosts = await Post.find({
-    //   user: { $all: [`${userArr}`] },
-    // });
+    let objectId = req.body.user.following;
+    objectId.push(req.body.user._id);
 
-    //console.log(newPosts);
-    // let results: any;
-    // userArr.forEach(async (userId) => {
-    //   //let results: object[] = [];
-    //   const test1 = await Post.find({
-    //     user: { $all: [`${userId}`] },
-    //   });
-    //console.log(test1);
+    const posts = await Post.find({ user: { $in: objectId } })
+      .populate("user")
+      .populate("retweetData")
+      .populate("replyTo")
+      .sort({ createdAt: -1 });
 
-    // results.push(test1);
-    // });
-    //console.log(results);
+    await User.populate(posts, { path: "replyTo.user" });
+    await User.populate(posts, { path: "retweetData.user" });
 
-    // userArr.forEach(async (user) => {
-    //   const newPosts = await Post.find({ user: { $all: [`${user}`] } });
-    //   console.log(newPosts);
-    // });
+    res.json({ posts });
+  } catch (error) {
+    res.status(404).json({ message: "No Posts Found" });
+  }
+};
 
+// @Fetch all posts
+// @route GET /api/posts
+// @access Public
+
+export const getAllPosts = async (req: Request, res: Response) => {
+  try {
     const keyword: any = req.query.keyword
       ? { content: { $regex: req.query.keyword, $options: "i" } }
       : {};

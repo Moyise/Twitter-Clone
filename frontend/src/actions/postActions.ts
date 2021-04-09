@@ -30,7 +30,33 @@ import {
 } from "../constants/postConstants";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
 
-export const listPosts = (keyword: string = "") => async (
+export const listPosts = () => async (dispatch: any, getState: any) => {
+  try {
+    dispatch({ type: POST_LIST_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/posts`, config);
+
+    dispatch({ type: POST_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: POST_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listAllPosts = (keyword: string = "") => async (
   dispatch: any,
   getState: any
 ) => {
@@ -45,7 +71,7 @@ export const listPosts = (keyword: string = "") => async (
       },
     };
 
-    const { data } = await axios.get(`/api/posts?keyword=${keyword}`, config);
+    const { data } = await axios.get(`/api/posts/search?keyword=${keyword}`, config);
 
     dispatch({ type: POST_LIST_SUCCESS, payload: data });
   } catch (error) {

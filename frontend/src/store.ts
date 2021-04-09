@@ -21,7 +21,13 @@ import {
   postsUserReducer,
   postPinReducer,
 } from "./reducers/postReducers";
-import { chatCreateReducer } from "./reducers/chatReducers";
+import {
+  chatCreateReducer,
+  chatDetailsReducer,
+  chatGroupeNameUpdateReducer,
+  chatListReducer,
+} from "./reducers/chatReducers";
+import { messageCreateReducer } from "./reducers/messageReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -41,6 +47,10 @@ const reducer = combineReducers({
   postsUser: postsUserReducer,
   postPin: postPinReducer,
   chatCreate: chatCreateReducer,
+  chatList: chatListReducer,
+  chatDetails: chatDetailsReducer,
+  chatGroupName: chatGroupeNameUpdateReducer,
+  messageCreate: messageCreateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

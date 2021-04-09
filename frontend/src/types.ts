@@ -29,6 +29,8 @@ export interface IUserAuth {
         likes: string[];
         retweets: string[];
         isVerified: boolean;
+        bio: string;
+        website: string;
         following: string[];
         followers: string[];
       }
@@ -45,6 +47,8 @@ export interface IUserAuth {
         likes: string[];
         retweets: string[];
         isVerified: boolean;
+        bio: string;
+        website: string;
         following: string[];
         followers: string[];
       }
@@ -82,6 +86,8 @@ export interface IUser {
         likes: string[];
         retweets: string[];
         isVerified: boolean;
+        bio: string;
+        website: string;
         following: string[];
         followers: string[];
       }
@@ -98,6 +104,8 @@ export interface IUser {
         likes: string[];
         retweets: string[];
         isVerified: boolean;
+        bio: string;
+        website: string;
         following: string[];
         followers: string[];
       }
@@ -430,4 +438,78 @@ export interface ISelectedUser {
       updatedAt: string;
     }
   ];
+}
+
+export interface IChat {
+  chat?: {
+    _id: string;
+    chatName: string;
+    username: string;
+    isGroupChat: boolean;
+    users: [
+      {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        bio: string;
+        website: string;
+        following: string[];
+        followers: string[];
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    createdAt: string;
+    updatedAt: string;
+  };
+  success?: boolean;
+  error?: string;
+  name?: string;
+  showModal?: boolean;
+  setShowModal?: any;
+}
+
+export interface IChats {
+  chats?: [
+    {
+      _id: string;
+      chatName: string;
+      username: string;
+      isGroupChat: boolean;
+      users: [
+        {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          bio: string;
+          website: string;
+          following: string[];
+          followers: string[];
+          createdAt: string;
+          updatedAt: string;
+        }
+      ];
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  success?: boolean;
+}
+
+export interface IChatGroupName {
+  success?: boolean;
 }

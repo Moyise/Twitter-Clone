@@ -8,12 +8,13 @@ import React, {
 import { useDispatch, useSelector } from "react-redux";
 import { deselectUser, getUsers, selectUser } from "../../actions/userActions";
 import { reducerState } from "../../store";
-import { ISelectedUser, IUsers } from "../../types";
+import { IChat, ISelectedUser, IUsers } from "../../types";
 import UserMessage from "../../components/UserMessage/UserMessage";
 import SelectedUser from "../../components/SelectedUser/SelectedUser";
 import "./newMessage.scss";
 import { USER_SELECT_RESET } from "../../constants/userConstants";
-import { createChat } from "../../actions/chatActions";
+import { createGroupChat } from "../../actions/chatActions";
+import { useHistory } from "react-router-dom";
 
 interface IModal {
   showModal?: boolean;
@@ -21,8 +22,9 @@ interface IModal {
 }
 
 const NewMessage: FunctionComponent<IModal> = ({ showModal, setShowModal }) => {
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const newRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [username, setUsername] = useState("");
 
@@ -33,6 +35,9 @@ const NewMessage: FunctionComponent<IModal> = ({ showModal, setShowModal }) => {
     (state: reducerState) => state.userSelect
   );
   const { selectedUser } = userSelect;
+
+  const chatCreate: IChat = useSelector((state: reducerState) => state.chatCreate);
+  const { success, chat } = chatCreate;
 
   const keyPress = useCallback(
     (e) => {
@@ -47,12 +52,17 @@ const NewMessage: FunctionComponent<IModal> = ({ showModal, setShowModal }) => {
     dispatch({ type: USER_SELECT_RESET });
     dispatch(getUsers());
 
+    if (success) {
+      setShowModal(false);
+      history.push(`/messages/${chat?._id}`);
+    }
+
     document.addEventListener("keydown", keyPress);
     return () => document.removeEventListener("keydown", keyPress);
-  }, [keyPress, dispatch]);
+  }, [keyPress, dispatch, success, setShowModal, history, chat]);
 
   const closeModal = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current === event.target) {
+    if (newRef.current === event.target) {
       setShowModal(false);
     }
   };
@@ -89,14 +99,14 @@ const NewMessage: FunctionComponent<IModal> = ({ showModal, setShowModal }) => {
   const clickHandler = () => {
     //Dispatch
     if (selectedUser) {
-      dispatch(createChat(selectedUser));
+      dispatch(createGroupChat(selectedUser));
     }
   };
 
   return (
     <>
       {showModal && (
-        <div ref={modalRef} className="newMessageBg" onClick={closeModal}>
+        <div ref={newRef} className="newMessageBg" onClick={closeModal}>
           <div className="modal">
             <form className="modalForm" onSubmit={submitHandler}>
               <div className="modalTop">

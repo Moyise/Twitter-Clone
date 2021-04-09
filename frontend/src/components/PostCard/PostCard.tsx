@@ -26,9 +26,6 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
-  // const following = userInfo?.following.map((user) => user._id).includes(post?.user._id);
-  // console.log(following);
-
   const id = match.params.id;
 
   useEffect(() => {

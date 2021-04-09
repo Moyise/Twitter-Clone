@@ -3,7 +3,7 @@ import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import "./profileScreen.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { IPinPost, IPosts, IUser, IUserAuth } from "../../types";
+import { IChat, IPinPost, IPosts, IUser, IUserAuth } from "../../types";
 import { reducerState } from "../../store";
 import { detailsUser, followUser } from "../../actions/userActions";
 import { userDate } from "../../timeFunction";
@@ -12,6 +12,8 @@ import { POSTS_USER_RESET } from "../../constants/postConstants";
 import PostCard from "../../components/PostCard/PostCard";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import PinPost from "../../components/PinPost/PinPost";
+import { createChat } from "../../actions/chatActions";
+import { CHAT_CREATE_RESET } from "../../constants/chatConstants";
 
 interface IParams {
   id: string;
@@ -39,6 +41,9 @@ const ProfileScreen = () => {
   const postPin: IPinPost = useSelector((state: reducerState) => state.postPin);
   const { success } = postPin;
 
+  const chatCreate: IChat = useSelector((state: reducerState) => state.chatCreate);
+  const { success: createSuccess, chat } = chatCreate;
+
   const id = match.params.id;
 
   const tweets = posts?.filter((post) => {
@@ -59,15 +64,26 @@ const ProfileScreen = () => {
     if (!userInfo) {
       history.push("/login");
     }
+    if (createSuccess) {
+      history.push(`/messages/${chat?._id}`);
+      dispatch({ type: CHAT_CREATE_RESET });
+    }
 
     dispatch({ type: POSTS_USER_RESET });
     dispatch(detailsUser(id));
     dispatch(userPosts(id));
-  }, [dispatch, userInfo, history, id, success]);
+  }, [dispatch, userInfo, history, id, success, createSuccess, chat]);
 
   const followHandler = () => {
     if (userInfo) {
       dispatch(followUser(id, userInfo?._id));
+    }
+  };
+
+  const clickHandler = () => {
+    //Dispatch
+    if (user) {
+      dispatch(createChat([user], user.username));
     }
   };
 
@@ -104,7 +120,7 @@ const ProfileScreen = () => {
             </div>
             <div className="userButtons">
               {userInfo?._id !== user?._id && (
-                <div className="icon">
+                <div className="icon" onClick={clickHandler}>
                   <svg
                     width="24"
                     height="24"

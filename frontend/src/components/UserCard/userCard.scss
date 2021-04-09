@@ -1,8 +1,9 @@
 .userCard {
   display: flex;
   align-items: flex-start;
-  padding: 20px;
+  padding: 10px 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 0;
   overflow: hidden;
   .left {
     .profile {
@@ -37,6 +38,12 @@
         padding: 2px;
       }
     }
+    .bio {
+      padding-top: 10px;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+    }
   }
   .right {
     .followButton {
@@ -60,5 +67,8 @@
         background: #da1a3a;
       }
     }
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 }

@@ -32,9 +32,6 @@ const HomeScreen = () => {
 
   const dispatch = useDispatch();
 
-  // const followingArr = userInfo?.following.map((user) => user._id);
-  // console.log(followingArr);
-
   useEffect(() => {
     textareaRef.current.style.height = "0px";
     const scrollHeight = textareaRef.current.scrollHeight;

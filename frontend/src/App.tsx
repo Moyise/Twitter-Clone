@@ -10,6 +10,10 @@ import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
 import FollowsScreen from "./screens/FollowsScreen/FollowsScreen";
 import RightBar from "./components/RightBar/RightBar";
+import Message from "./components/Message/Message";
+import ChatInfo from "./components/ChatInfo/ChatInfo";
+import Participant from "./components/Participant/Participant";
+import EmptyMessage from "./components/EmptyMessage/EmptyMessage";
 import SearchScreen from "./screens/SearchScreen/SearchScreen";
 import MessagesScreen from "./screens/MessagesScreen/MessagesScreen";
 
@@ -26,10 +30,35 @@ function App() {
             <SignupScreen />
           </Route>
 
+          <Route path="/messages/:id/info" exact>
+            <div className="app">
+              <Sidebar />
+              <MessagesScreen />
+              <ChatInfo />
+            </div>
+          </Route>
+
+          <Route path="/messages/:id/participants" exact>
+            <div className="app">
+              <Sidebar />
+              <MessagesScreen />
+              <Participant />
+            </div>
+          </Route>
+
+          <Route path="/messages/:id" exact>
+            <div className="app">
+              <Sidebar />
+              <MessagesScreen />
+              <Message />
+            </div>
+          </Route>
+
           <Route path="/messages" exact>
             <div className="app">
               <Sidebar />
               <MessagesScreen />
+              <EmptyMessage />
             </div>
           </Route>
 

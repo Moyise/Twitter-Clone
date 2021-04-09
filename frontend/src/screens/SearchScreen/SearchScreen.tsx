@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
-import { listPosts } from "../../actions/postActions";
+import { listAllPosts } from "../../actions/postActions";
 import { followUser, getUsers } from "../../actions/userActions";
 import PostCard from "../../components/PostCard/PostCard";
 import UserCard from "../../components/UserCard/UserCard";
@@ -39,10 +39,10 @@ const SearchScreen = () => {
     if (!userInfo) {
       history.push("/login");
     }
-    //dispatch({ type: POST_LIST_RESET });
+    dispatch({ type: POST_LIST_RESET });
     if (match.params.keyword) {
       setKeyword(match.params.keyword);
-      dispatch(listPosts(match.params.keyword));
+      dispatch(listAllPosts(match.params.keyword));
     }
 
     if (route === "posts") {
@@ -65,7 +65,7 @@ const SearchScreen = () => {
     setTimeout(() => {
       if (value) {
         if (pathname === "/search/posts") {
-          dispatch(listPosts(value));
+          dispatch(listAllPosts(value));
         } else {
           dispatch(getUsers(value));
         }
@@ -78,7 +78,7 @@ const SearchScreen = () => {
 
     if (keyword.trim()) {
       if (pathname === "/search/posts") {
-        dispatch(listPosts(keyword));
+        dispatch(listAllPosts(keyword));
       } else {
         dispatch(getUsers(keyword));
       }

@@ -1,24 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { reducerState } from "../../store";
-import { IUserAuth } from "../../types";
+import { IChat, IChatGroupName, IChats, IUserAuth } from "../../types";
 import NewMessage from "../../components/NewMessage/NewMessage";
+import ChatCard from "../../components/ChatCard/ChatCard";
 import "./messagesScreen.scss";
+import { getChats } from "../../actions/chatActions";
 
 const MessagesScreen = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const [showModal, setShowModal] = useState(false);
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const chatList: IChats = useSelector((state: reducerState) => state.chatList);
+  const { chats } = chatList;
+
+  const chatCreate: IChat = useSelector((state: reducerState) => state.chatCreate);
+  const { success } = chatCreate;
+
+  const chatGroupName: IChatGroupName = useSelector(
+    (state: reducerState) => state.chatGroupName
+  );
+  const { success: chatNameSuccess } = chatGroupName;
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     }
-  }, [userInfo, history]);
+
+    dispatch(getChats());
+  }, [userInfo, history, dispatch, success, chatNameSuccess]);
 
   return (
     <>
@@ -45,6 +62,11 @@ const MessagesScreen = () => {
                 fillOpacity="0.9"
               />
             </svg>
+          </div>
+          <div ref={ref} className="messageBottom">
+            {chats?.map((chat) => (
+              <ChatCard key={chat._id} chat={chat} />
+            ))}
           </div>
         </div>
         <NewMessage showModal={showModal} setShowModal={setShowModal} />

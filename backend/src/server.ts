@@ -9,6 +9,7 @@ import { resolvers } from "./config/resolvers";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import chatRoutes from "./routes/chatRoutes";
+import messageRoutes from "./routes/messageRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
 
 dotenv.config();
@@ -30,6 +31,7 @@ server.applyMiddleware({ app });
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/chats", chatRoutes);
+app.use("/api/messages", messageRoutes);
 app.use("/api/upload", uploadRoutes);
 
 //

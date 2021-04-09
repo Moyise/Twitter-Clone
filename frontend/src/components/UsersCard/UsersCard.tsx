@@ -21,14 +21,12 @@ const UsersCard: FunctionComponent<IFollow> = ({ user, onClick }) => {
     <>
       {!following && userInfo?._id !== user?._id && (
         <div className="usersCard">
-          <div className="left">
+          <Link to={`/profile/${user?._id}`} className="left">
             <img className="profile" src={user?.profilePic} alt="profile" />
-          </div>
-          <div className="middle">
+          </Link>
+          <Link to={`/profile/${user?._id}`} className="middle">
             <div className="user">
-              <Link to={`/profile/${user?._id}`} className="name">
-                {user?.firstName}
-              </Link>
+              <p className="name">{user?.firstName}</p>
               {user?.isVerified && (
                 <div className="icon">
                   <svg
@@ -50,7 +48,7 @@ const UsersCard: FunctionComponent<IFollow> = ({ user, onClick }) => {
               <span>@{user?.username.substring(0, 4)} </span>
               {followYou && <span className="followsYou">Follows you</span>}
             </p>
-          </div>
+          </Link>
           <div className="right">
             <button
               className={following ? "followButton active" : "followButton"}

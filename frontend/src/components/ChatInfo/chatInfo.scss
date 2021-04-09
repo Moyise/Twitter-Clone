@@ -1,0 +1,126 @@
+.chatInfo {
+  max-width: 550px;
+  width: 100%;
+  max-height: 100vh;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 0;
+  overflow-y: hidden;
+  .chatInfoCtn {
+    font-style: normal;
+    .chatInfoTop {
+      position: sticky;
+      top: 0;
+      background-color: #000000;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 15px;
+      .title {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.9);
+        padding-left: 20px;
+      }
+      svg {
+        cursor: pointer;
+        border-radius: 20px;
+        &:hover {
+          background: rgba(0, 133, 255, 0.1);
+        }
+      }
+    }
+    .chatInfoName {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      .left {
+        max-width: 90px;
+        display: flex;
+        align-items: center;
+
+        .profile {
+          width: 32px;
+          height: 32px;
+          border-radius: 100px;
+          object-fit: cover;
+          //margin-right: 15px;
+        }
+
+        .groupChat {
+          width: 30px;
+          height: 30px;
+          border-radius: 100px;
+          object-fit: cover;
+          border: 2px solid rgba(255, 255, 255, 0.9);
+        }
+      }
+      .number {
+        .rest {
+          font-weight: 300;
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.8);
+          padding-left: 4px;
+        }
+      }
+      .middle {
+        padding-left: 15px;
+        .top {
+          font-weight: bold;
+          font-size: 18px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .bottom {
+          font-weight: 300;
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.4);
+          padding-bottom: 1px;
+        }
+      }
+      .middle.single {
+        cursor: pointer;
+        width: 100%;
+      }
+      .right {
+        margin: auto 0 auto auto;
+
+        font-weight: normal;
+        font-size: 14px;
+        color: #1a91da;
+        cursor: pointer;
+      }
+    }
+    .bar {
+      background: #323232;
+      height: 12px;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .peoplesInfo {
+      .title {
+        padding: 10px 15px;
+        font-weight: bold;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    }
+    .addPeople {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0;
+      cursor: pointer;
+      .button {
+        font-weight: normal;
+        font-size: 14px;
+        color: #1a91da;
+      }
+      &:hover {
+        background: rgba(110, 190, 255, 0.05);
+      }
+    }
+  }
+}
