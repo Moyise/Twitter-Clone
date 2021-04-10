@@ -3,7 +3,7 @@ import { model, Schema, Model, Document, Types } from "mongoose";
 interface IMessage extends Document {
   content: string;
   sender: object;
-  chat: object;
+  chat: object[];
   readBy: object[];
   createdAt?: any;
   updatedAt?: any;

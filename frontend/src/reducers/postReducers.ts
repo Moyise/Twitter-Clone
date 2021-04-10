@@ -37,10 +37,10 @@ import { IAction } from "../types";
 export const postListReducer = (state = { posts: [] }, { type, payload }: IAction) => {
   switch (type) {
     case POST_LIST_REQUEST:
-      return { loading: true, posts: [] };
+      return { ...state, loading: true, posts: [] };
 
     case POST_LIST_SUCCESS:
-      return { loading: false, posts: payload.posts };
+      return { ...state, loading: false, posts: payload.posts };
 
     case POST_LIST_FAIL:
       return { loading: false, error: payload };
@@ -75,10 +75,10 @@ export const postCreateReducer = (state = {}, { type, payload }: IAction) => {
 export const postLikeReducer = (state = {}, { type, payload }: IAction) => {
   switch (type) {
     case POST_LIKE_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
 
     case POST_LIKE_SUCCESS:
-      return { loading: false, success: true };
+      return { ...state, loading: false, success: true };
 
     case POST_LIKE_FAIL:
       return { loading: false, error: payload };
@@ -91,10 +91,10 @@ export const postLikeReducer = (state = {}, { type, payload }: IAction) => {
 export const postRetweetReducer = (state = {}, { type, payload }: IAction) => {
   switch (type) {
     case POST_RETWEET_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
 
     case POST_RETWEET_SUCCESS:
-      return { loading: false, success: true };
+      return { ...state, loading: false, success: true };
 
     case POST_RETWEET_FAIL:
       return { loading: false, error: payload };

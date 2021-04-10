@@ -226,4 +226,13 @@
       }
     }
   }
+
+  .loading {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+  }
 }

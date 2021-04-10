@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import { getChatsById } from "../../actions/chatActions";
-import { createMessage } from "../../actions/messageActions";
+import { createMessage, getMessagesByChat } from "../../actions/messageActions";
 import { CHAT_DETAILS_RESET } from "../../constants/chatConstants";
+import { MESSAGE_LIST_RESET } from "../../constants/messageConstants";
 import { reducerState } from "../../store";
 import { userDate } from "../../timeFunction";
-import { IChat, IUserAuth } from "../../types";
+import { IChat, IMessageCreate, IMessages, IUserAuth } from "../../types";
+import MessageCard from "../MessageCard/MessageCard";
 import "./message.scss";
 
 interface IParams {
@@ -25,7 +27,15 @@ const Message = () => {
   const { userInfo } = userLogin;
 
   const chatDetails: IChat = useSelector((state: reducerState) => state.chatDetails);
-  const { chat, error } = chatDetails;
+  const { chat, error, loading } = chatDetails;
+
+  const messageCreate: IMessageCreate = useSelector(
+    (state: reducerState) => state.messageCreate
+  );
+  const { success } = messageCreate;
+
+  const messageList: IMessages = useSelector((state: reducerState) => state.messageList);
+  const { messages } = messageList;
 
   const users = chat?.users.filter((user) => user._id !== userInfo?._id);
   const userIds = users?.map((user) => user._id);
@@ -40,6 +50,15 @@ const Message = () => {
     const scrollHeight = textareaRef.current.scrollHeight;
     textareaRef.current.style.height = scrollHeight + "px";
   }, [content]);
+
+  useEffect(() => {
+    if (success) {
+      setContent("");
+      dispatch({ type: MESSAGE_LIST_RESET });
+    }
+
+    dispatch(getMessagesByChat(chatId));
+  }, [dispatch, success, chatId]);
 
   useEffect(() => {
     dispatch({ type: CHAT_DETAILS_RESET });
@@ -97,87 +116,109 @@ const Message = () => {
     <>
       <div className="message">
         <div className="messageCtn">
-          <div className="messageTop">
-            {chat && (
-              <>
-                <div className="left">
-                  {images && images.length > 1 ? (
-                    images.slice(0, 3).map((image: any, index: number) => (
-                      <Link
-                        to={`/messages/${chat?._id}/participants`}
-                        key={index}
-                        className="linkCtn"
-                      >
-                        <img src={image} alt="profile" className="groupChat" />
+          {loading ? (
+            <div className="loading">
+              <i
+                className="fas fa-spinner fa-spin fa-2x"
+                style={{ color: "rgba(0, 238, 255, 0.9)" }}
+              ></i>
+            </div>
+          ) : (
+            <div className="messageTop">
+              {chat && (
+                <>
+                  <div className="left">
+                    {images && images.length > 1 ? (
+                      images.slice(0, 3).map((image: any, index: number) => (
+                        <Link
+                          to={`/messages/${chat?._id}/participants`}
+                          key={index}
+                          className="linkCtn"
+                        >
+                          <img src={image} alt="profile" className="groupChat" />
+                        </Link>
+                      ))
+                    ) : (
+                      <Link to={`/profile/${userIds}`}>
+                        <img className="profile" src={images![0]} alt="profile" />
                       </Link>
-                    ))
-                  ) : (
-                    <Link to={`/profile/${userIds}`}>
-                      <img className="profile" src={images![0]} alt="profile" />
-                    </Link>
-                  )}
-                </div>
-                {images && images?.length > 3 && (
-                  <div className="number">
-                    <p className="rest">+{images.length - 3}</p>
+                    )}
                   </div>
-                )}
-
-                <div className="middle">
-                  <p className="top">
-                    <span>{getChatName(chat).substring(0, 26)}</span>
-                    {getChatName(chat).length > 26 && <span>...</span>}
-                  </p>
-                  {users?.length === 1 && <p className="bottom">@{username}</p>}
-                </div>
-                <Link to={`/messages/${chatId}/info`} className="right">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.99 22C6.46846 21.9945 1.99632 17.5149 2 11.9933C2.00368 6.47179 6.48179 1.99816 12.0033 2C17.5249 2.00184 22 6.47845 22 12C21.9967 17.5254 17.5154 22.0022 11.99 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.6845 16.444 4.10977 12.0425 4.08599C7.64111 4.06245 4.04732 7.59876 4 12V12.172ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
-                      fill="#1A91DA"
-                    />
-                  </svg>
-                </Link>
-              </>
-            )}
-          </div>
-          {users?.length === 1 && (
-            <div className="userDescription">
-              <div className="userCtn">
-                <div className="user">
-                  <p className="firstName">{firstName}</p>
-                  <p className="username">@{username}</p>
-                </div>
-                <p className="description">{bio}</p>
-                <div className="join">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.25 16.5H3.75C2.92157 16.5 2.25 15.8284 2.25 15V4.5C2.25 3.67157 2.92157 3 3.75 3H5.25V1.5H6.75V3H11.25V1.5H12.75V3H14.25C15.0784 3 15.75 3.67157 15.75 4.5V15C15.75 15.8284 15.0784 16.5 14.25 16.5ZM3.75 7.5V15H14.25V7.5H3.75ZM3.75 4.5V6H14.25V4.5H3.75ZM12.75 13.5H11.25V12H12.75V13.5ZM9.75 13.5H8.25V12H9.75V13.5ZM6.75 13.5H5.25V12H6.75V13.5ZM12.75 10.5H11.25V9H12.75V10.5ZM9.75 10.5H8.25V9H9.75V10.5ZM6.75 10.5H5.25V9H6.75V10.5Z"
-                      fill="white"
-                      fillOpacity="0.3"
-                    />
-                  </svg>
-                  {createdAt && (
-                    <p className="date">Joined {userDate(new Date(createdAt[0]))}</p>
+                  {images && images?.length > 3 && (
+                    <div className="number">
+                      <p className="rest">+{images.length - 3}</p>
+                    </div>
                   )}
-                </div>
-              </div>
+
+                  <div className="middle">
+                    <p className="top">
+                      <span>{getChatName(chat).substring(0, 26)}</span>
+                      {getChatName(chat).length > 26 && <span>...</span>}
+                    </p>
+                    {users?.length === 1 && <p className="bottom">@{username}</p>}
+                  </div>
+                  <Link to={`/messages/${chatId}/info`} className="right">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.99 22C6.46846 21.9945 1.99632 17.5149 2 11.9933C2.00368 6.47179 6.48179 1.99816 12.0033 2C17.5249 2.00184 22 6.47845 22 12C21.9967 17.5254 17.5154 22.0022 11.99 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.6845 16.444 4.10977 12.0425 4.08599C7.64111 4.06245 4.04732 7.59876 4 12V12.172ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+                        fill="#1A91DA"
+                      />
+                    </svg>
+                  </Link>
+                </>
+              )}
             </div>
           )}
-          {error && <p className="error">{error}</p>}
-          <div className="messagesCtn"></div>
+
+          <div className="messagesWrapper">
+            {users?.length === 1 && (
+              <div className="userDescription">
+                <div className="userCtn">
+                  <div className="user">
+                    <p className="firstName">{firstName}</p>
+                    <p className="username">@{username}</p>
+                  </div>
+                  <p className="description">{bio}</p>
+                  <div className="join">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M14.25 16.5H3.75C2.92157 16.5 2.25 15.8284 2.25 15V4.5C2.25 3.67157 2.92157 3 3.75 3H5.25V1.5H6.75V3H11.25V1.5H12.75V3H14.25C15.0784 3 15.75 3.67157 15.75 4.5V15C15.75 15.8284 15.0784 16.5 14.25 16.5ZM3.75 7.5V15H14.25V7.5H3.75ZM3.75 4.5V6H14.25V4.5H3.75ZM12.75 13.5H11.25V12H12.75V13.5ZM9.75 13.5H8.25V12H9.75V13.5ZM6.75 13.5H5.25V12H6.75V13.5ZM12.75 10.5H11.25V9H12.75V10.5ZM9.75 10.5H8.25V9H9.75V10.5ZM6.75 10.5H5.25V9H6.75V10.5Z"
+                        fill="white"
+                        fillOpacity="0.3"
+                      />
+                    </svg>
+                    {createdAt && (
+                      <p className="date">Joined {userDate(new Date(createdAt[0]))}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            {error && <p className="error">{error}</p>}
+            <div className="messagesCtn">
+              {messages &&
+                messages.map((message, index) => (
+                  <MessageCard
+                    key={message._id}
+                    message={message}
+                    isGroupChat={chat?.isGroupChat!}
+                    index={index + 1}
+                  />
+                ))}
+            </div>
+          </div>
 
           <div className="textInputCtn">
             <form className="textInput" onSubmit={submitHandler}>

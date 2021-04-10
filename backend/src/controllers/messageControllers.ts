@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Message from "../models/messageModel";
+import Chat from "../models/chatModel";
 
 //@desc Create message
 //@route POST /api/messages
@@ -21,8 +22,27 @@ export const newMessage = async (req: Request, res: Response) => {
       chat: chatId,
     });
 
+    await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
+
     res.status(201).json(message);
   } catch (error) {
     res.status(404).json({ message: "Can't create message" });
+  }
+};
+
+// @Fetch all chats
+// @route GET /api/messages/:chatId
+// @access Private
+
+export const getMessagesByChatId = async (req: Request, res: Response) => {
+  try {
+    const chatId = req.params.chatId;
+    const messages = await Message.find({ chat: chatId }).populate("sender");
+
+    if (messages) {
+      res.status(201).json(messages);
+    }
+  } catch (error) {
+    res.status(404).json({ message: "No Messages Found" });
   }
 };

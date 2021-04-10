@@ -39,10 +39,10 @@ export const chatCreateReducer = (state = {}, { type, payload }: IAction) => {
 export const chatListReducer = (state = { chats: [] }, { type, payload }: IAction) => {
   switch (type) {
     case CHAT_LIST_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
 
     case CHAT_LIST_SUCCESS:
-      return { loading: false, chats: payload };
+      return { ...state, loading: false, chats: payload };
 
     case CHAT_LIST_FAIL:
       return { loading: false, error: payload };

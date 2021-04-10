@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { reducerState } from "../../store";
-import { IChat, IChatGroupName, IChats, IUserAuth } from "../../types";
+import { IChat, IChatGroupName, IChats, IMessageCreate, IUserAuth } from "../../types";
 import NewMessage from "../../components/NewMessage/NewMessage";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import "./messagesScreen.scss";
@@ -29,13 +29,18 @@ const MessagesScreen = () => {
   );
   const { success: chatNameSuccess } = chatGroupName;
 
+  const messageCreate: IMessageCreate = useSelector(
+    (state: reducerState) => state.messageCreate
+  );
+  const { success: createChatSuccess } = messageCreate;
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     }
 
     dispatch(getChats());
-  }, [userInfo, history, dispatch, success, chatNameSuccess]);
+  }, [userInfo, history, dispatch, success, chatNameSuccess, createChatSuccess]);
 
   return (
     <>

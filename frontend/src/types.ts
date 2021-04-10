@@ -466,6 +466,32 @@ export interface IChat {
         updatedAt: string;
       }
     ];
+    latestMessage: {
+      _id: string;
+      chat: string;
+      content: string;
+      readBy: string[];
+      sender: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        bio: string;
+        website: string;
+        following: string[];
+        followers: string[];
+        createdAt: string;
+        updatedAt: string;
+      };
+      createdAt: string;
+      updatedAt: string;
+    };
     createdAt: string;
     updatedAt: string;
   };
@@ -474,6 +500,7 @@ export interface IChat {
   name?: string;
   showModal?: boolean;
   setShowModal?: any;
+  loading?: boolean;
 }
 
 export interface IChats {
@@ -503,13 +530,107 @@ export interface IChats {
           updatedAt: string;
         }
       ];
+      latestMessage: {
+        _id: string;
+        chat: string;
+        content: string;
+        readBy: string[];
+        sender: {
+          _id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          profilePic: string;
+          coverPic: string;
+          likes: string[];
+          retweets: string[];
+          isVerified: boolean;
+          bio: string;
+          website: string;
+          following: string[];
+          followers: string[];
+          createdAt: string;
+          updatedAt: string;
+        };
+        createdAt: string;
+        updatedAt: string;
+      };
       createdAt: string;
       updatedAt: string;
     }
   ];
   success?: boolean;
+  loading: boolean;
 }
 
 export interface IChatGroupName {
+  success?: boolean;
+}
+
+export interface IMessages {
+  messages?: [
+    {
+      _id: string;
+      chat: string;
+      content: string;
+      readBy: string[];
+      sender: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        bio: string;
+        website: string;
+        following: string[];
+        followers: string[];
+        createdAt: string;
+        updatedAt: string;
+      };
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  loading: boolean;
+}
+
+export interface IMessage {
+  message: {
+    _id: string;
+    chat: string;
+    content: string;
+    readBy: string[];
+    sender: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
+  isGroupChat: boolean;
+  index: number;
+}
+
+export interface IMessageCreate {
   success?: boolean;
 }

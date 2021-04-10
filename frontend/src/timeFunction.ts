@@ -64,15 +64,15 @@ export const postTime = (time: Date) => {
 
   if (hour >= 12) {
     if (minute < 10) {
-      return `${hour - 12}:0${minute}, PM`;
+      return `${hour - 12}:0${minute} PM`;
     } else {
-      return `${hour - 12}:${minute}, PM`;
+      return `${hour - 12}:${minute} PM`;
     }
   } else {
     if (minute < 10) {
-      return `${hour}:0${minute}, AM`;
+      return `${hour}:0${minute} AM`;
     } else {
-      return `${hour}:${minute}, AM`;
+      return `${hour}:${minute} AM`;
     }
   }
 };

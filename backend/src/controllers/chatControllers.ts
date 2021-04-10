@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Chat from "../models/chatModel";
+import User from "../models/userModel";
 
 //@desc Create chat
 //@route POST /api/chats
@@ -65,7 +66,10 @@ export const getChats = async (req: Request, res: Response) => {
       users: { $elemMatch: { $eq: req.body.user._id } },
     })
       .populate("users")
+      .populate("latestMessage")
       .sort({ updatedAt: -1 });
+
+    await User.populate(chats, { path: "latestMessage.sender" });
     if (chats) {
       res.status(200).json(chats);
     }

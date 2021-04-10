@@ -27,7 +27,7 @@ import {
   chatGroupeNameUpdateReducer,
   chatListReducer,
 } from "./reducers/chatReducers";
-import { messageCreateReducer } from "./reducers/messageReducers";
+import { messageCreateReducer, messageListReducer } from "./reducers/messageReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -51,6 +51,7 @@ const reducer = combineReducers({
   chatDetails: chatDetailsReducer,
   chatGroupName: chatGroupeNameUpdateReducer,
   messageCreate: messageCreateReducer,
+  messageList: messageListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
