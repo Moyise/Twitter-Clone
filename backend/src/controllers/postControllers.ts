@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import generateToken from "../utils/generateToken";
 import Post from "../models/postModel";
 import User from "../models/userModel";
+import Notification from "../models/notificationModel";
 
 // @Fetch all followed users posts
 // @route GET /api/posts
@@ -92,9 +93,22 @@ export const likePost = async (req: Request, res: Response) => {
       { new: true }
     );
     // Insert post like
-    await Post.findByIdAndUpdate(postId, { [option]: { likes: userId } }, { new: true })
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      { [option]: { likes: userId } },
+      { new: true }
+    )
       .populate("followers")
       .populate("following");
+
+    if (!isLiked) {
+      await (Notification as any).insertNotification(
+        post?.user,
+        userId,
+        "tweetLike",
+        post?._id
+      );
+    }
 
     if (user) {
       res.json({
@@ -155,11 +169,20 @@ export const retweetPost = async (req: Request, res: Response) => {
       .populate("followers")
       .populate("following");
     // Insert post retweet
-    await Post.findByIdAndUpdate(
+    const post = await Post.findByIdAndUpdate(
       postId,
       { [option]: { retweetUsers: userId } },
       { new: true }
     );
+
+    if (!deletedPost) {
+      await (Notification as any).insertNotification(
+        post?.user,
+        userId,
+        "retweet",
+        post?._id
+      );
+    }
 
     if (user) {
       res.json({
@@ -198,7 +221,17 @@ export const replyToPost = async (req: Request, res: Response) => {
     const postId = req.params.id;
     const userId = req.body.user._id;
 
-    await Post.create({ user: userId, replyTo: postId, content });
+    const post = await Post.create({ user: userId, replyTo: postId, content });
+    await Post.populate(post, { path: "replyTo" });
+
+    if (post.replyTo) {
+      await (Notification as any).insertNotification(
+        post.replyTo.user,
+        userId,
+        "reply",
+        post._id
+      );
+    }
 
     res.status(200).json({ message: "Reply success" });
   } catch (error) {

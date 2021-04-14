@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Message from "../models/messageModel";
 import Chat from "../models/chatModel";
+import User from "../models/userModel";
+import Notification from "../models/notificationModel";
 
 //@desc Create message
 //@route POST /api/messages
@@ -22,9 +24,28 @@ export const newMessage = async (req: Request, res: Response) => {
       chat: chatId,
     });
 
-    await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
+    const chat = await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
 
-    res.status(201).json(message);
+    if (chat) {
+      chat.users.forEach((userId) => {
+        if (userId.toString() === message.sender.toString()) return;
+
+        (Notification as any).insertNotification(
+          userId,
+          message.sender,
+          "newMessage",
+          message.chat
+        );
+      });
+    }
+
+    if (message) {
+      const popMessage = await Message.findById(message._id)
+        .populate("chat")
+        .populate("sender");
+      await User.populate(popMessage, { path: "chat.users" });
+      res.status(201).json(popMessage);
+    }
   } catch (error) {
     res.status(404).json({ message: "Can't create message" });
   }

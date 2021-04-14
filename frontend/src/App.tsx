@@ -14,8 +14,10 @@ import Message from "./components/Message/Message";
 import ChatInfo from "./components/ChatInfo/ChatInfo";
 import Participant from "./components/Participant/Participant";
 import EmptyMessage from "./components/EmptyMessage/EmptyMessage";
+import NotificationBadge from "./components/NotificationBadge/NotificationBadge";
 import SearchScreen from "./screens/SearchScreen/SearchScreen";
 import MessagesScreen from "./screens/MessagesScreen/MessagesScreen";
+import NotificationScreen from "./screens/NotificationScreen/NotificationScreen";
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <MessagesScreen />
+              <NotificationBadge />
               <ChatInfo />
             </div>
           </Route>
@@ -42,6 +45,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <MessagesScreen />
+              <NotificationBadge />
               <Participant />
             </div>
           </Route>
@@ -50,6 +54,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <MessagesScreen />
+              <NotificationBadge />
               <Message />
             </div>
           </Route>
@@ -58,7 +63,17 @@ function App() {
             <div className="app">
               <Sidebar />
               <MessagesScreen />
+              <NotificationBadge />
               <EmptyMessage />
+            </div>
+          </Route>
+
+          <Route path="/notifications" exact>
+            <div className="app">
+              <Sidebar />
+              <NotificationScreen />
+              <NotificationBadge />
+              <RightBar />
             </div>
           </Route>
 
@@ -66,6 +81,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <PostScreen />
+              <NotificationBadge />
               <RightBar />
             </div>
           </Route>
@@ -74,6 +90,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <SearchScreen />
+              <NotificationBadge />
               <RightBar />
             </div>
           </Route>
@@ -82,6 +99,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <FollowsScreen />
+              <NotificationBadge />
               <RightBar />
             </div>
           </Route>
@@ -90,6 +108,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <ProfileScreen />
+              <NotificationBadge />
               <RightBar />
             </div>
           </Route>
@@ -98,6 +117,7 @@ function App() {
             <div className="app">
               <Sidebar />
               <HomeScreen />
+              <NotificationBadge />
               <RightBar />
             </div>
           </Route>

@@ -5,7 +5,7 @@ interface IChat extends Document {
   username: string;
   users: object[];
   isGroupChat: boolean;
-  latestMessage: object;
+  latestMessage: any;
   createdAt?: any;
   updatedAt?: any;
 }

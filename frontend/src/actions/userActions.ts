@@ -24,6 +24,7 @@ import {
   USER_SELECT_ADD,
   USER_SELECT_REMOVE,
 } from "../constants/userConstants";
+import { emitNotification } from "../service/socket";
 
 export const login = (usOrEmail: string, password: string) => async (dispatch: any) => {
   try {
@@ -160,6 +161,8 @@ export const followUser = (id: string, userId: string) => async (
     };
 
     const { data } = await axios.put(`/api/users/${id}/follow`, { userId }, config);
+
+    emitNotification(id, userInfo._id);
 
     dispatch({ type: USER_FOLLOW_SUCCESS });
     dispatch({

@@ -62,7 +62,7 @@ export const createGroupChat = async (req: Request, res: Response) => {
 
 export const getChats = async (req: Request, res: Response) => {
   try {
-    const chats = await Chat.find({
+    let chats = await Chat.find({
       users: { $elemMatch: { $eq: req.body.user._id } },
     })
       .populate("users")
@@ -70,6 +70,15 @@ export const getChats = async (req: Request, res: Response) => {
       .sort({ updatedAt: -1 });
 
     await User.populate(chats, { path: "latestMessage.sender" });
+
+    if (req.query.unreadOnly && req.query.unreadOnly === "true") {
+      chats = chats.filter((r) => {
+        if (r.latestMessage) {
+          return !r.latestMessage.readBy.includes(req.body.user._id);
+        }
+      });
+    }
+
     if (chats) {
       res.status(200).json(chats);
     }

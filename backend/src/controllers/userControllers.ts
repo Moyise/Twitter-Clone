@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
+import Notification from "../models/notificationModel";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken";
 
@@ -165,6 +166,10 @@ export const followUser = async (req: Request, res: Response) => {
     )
       .populate("followers")
       .populate("following");
+
+    if (!isFollowing) {
+      await (Notification as any).insertNotification(id, userId, "follow", userId);
+    }
 
     if (updatedUser) {
       res.json({

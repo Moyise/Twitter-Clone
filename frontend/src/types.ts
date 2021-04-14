@@ -360,6 +360,7 @@ export interface IPostDetails {
       };
     };
   };
+  loading?: boolean;
 }
 
 export interface IFollow {
@@ -632,5 +633,183 @@ export interface IMessage {
 }
 
 export interface IMessageCreate {
+  message?: {
+    _id: string;
+    chat: string;
+    content: string;
+    readBy: string[];
+    sender: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
   success?: boolean;
+}
+
+export interface INotifications {
+  notifications: [
+    {
+      _id: string;
+      opened: boolean;
+      notificationType: string;
+      entityId: string;
+      userTo: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        bio: string;
+        website: string;
+        following: string[];
+        followers: string[];
+        createdAt: string;
+        updatedAt: string;
+      };
+      userFrom: {
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        profilePic: string;
+        coverPic: string;
+        likes: string[];
+        retweets: string[];
+        isVerified: boolean;
+        bio: string;
+        website: string;
+        following: string[];
+        followers: string[];
+        createdAt: string;
+        updatedAt: string;
+      };
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  loading?: boolean;
+  success?: boolean;
+}
+
+export interface INotification {
+  notification: {
+    _id: string;
+    opened: boolean;
+    notificationType: string;
+    entityId: string;
+    userTo: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    userFrom: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
+  onClick(event: any): void;
+}
+export interface ILatestNotification {
+  notification?: {
+    _id: string;
+    opened: boolean;
+    notificationType: string;
+    entityId: string;
+    userTo: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    userFrom: {
+      _id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      profilePic: string;
+      coverPic: string;
+      likes: string[];
+      retweets: string[];
+      isVerified: boolean;
+      bio: string;
+      website: string;
+      following: string[];
+      followers: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
+  success?: boolean;
+}
+
+export interface IReadNotification {
+  success?: boolean;
+  loading?: boolean;
+  error?: any;
 }

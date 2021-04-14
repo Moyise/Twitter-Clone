@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
-import { getChatsById } from "../../actions/chatActions";
+import { getChats, getChatsById } from "../../actions/chatActions";
 import { createMessage, getMessagesByChat } from "../../actions/messageActions";
 import { CHAT_DETAILS_RESET } from "../../constants/chatConstants";
 import { MESSAGE_LIST_RESET } from "../../constants/messageConstants";
 import { reducerState } from "../../store";
 import { userDate } from "../../timeFunction";
 import { IChat, IMessageCreate, IMessages, IUserAuth } from "../../types";
+import { socket } from "../../service/socket";
 import MessageCard from "../MessageCard/MessageCard";
 import "./message.scss";
 
@@ -16,23 +17,28 @@ interface IParams {
 }
 
 const Message = () => {
+  const history = useHistory();
   const match = useRouteMatch<IParams>();
   const dispatch = useDispatch();
   const chatId = match.params.id;
   const textareaRef = useRef<any>(null);
 
   const [content, setContent] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [lastTypingTime, setLastTypingTime] = useState<number>(new Date().getTime());
+  const [connected, setConnected] = useState(false);
+  //const [messageReceived, setMessageReceived] = useState(false);
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
   const chatDetails: IChat = useSelector((state: reducerState) => state.chatDetails);
-  const { chat, error, loading } = chatDetails;
+  const { chat, error } = chatDetails;
 
   const messageCreate: IMessageCreate = useSelector(
     (state: reducerState) => state.messageCreate
   );
-  const { success } = messageCreate;
+  const { success, message } = messageCreate;
 
   const messageList: IMessages = useSelector((state: reducerState) => state.messageList);
   const { messages } = messageList;
@@ -46,6 +52,48 @@ const Message = () => {
   const bio = users?.map((user) => user.bio);
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+  }, [history, userInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      socket.emit("setup", userInfo);
+    }
+
+    socket.emit("join_room", chatId);
+
+    const typingHandler = () => {
+      setTyping(true);
+      setLastTypingTime(new Date().getTime());
+      const timerLength = 2000;
+      setTimeout(() => {
+        const timeNow = new Date().getTime();
+
+        const timeDiff = timeNow - lastTypingTime;
+        if (timeDiff >= timerLength && typing) {
+          setTyping(false);
+        }
+      }, timerLength);
+    };
+    const messageHandler = () => {
+      setTyping(false);
+      dispatch(getChats());
+      dispatch(getMessagesByChat(chatId));
+    };
+    socket.on("connected", () => setConnected(true));
+    socket.on("typing", typingHandler);
+    //socket.on("message received", (newMessage: any) => console.log(newMessage));
+    socket.on("message received", messageHandler);
+    return () => {
+      socket.off("typing", typingHandler);
+      socket.off("connected", () => setConnected(true));
+      socket.off("message received", messageHandler);
+    };
+  }, [chatId, lastTypingTime, typing, setTyping, userInfo, dispatch]);
+
+  useEffect(() => {
     textareaRef.current.style.height = "32px";
     const scrollHeight = textareaRef.current.scrollHeight;
     textareaRef.current.style.height = scrollHeight + "px";
@@ -54,11 +102,16 @@ const Message = () => {
   useEffect(() => {
     if (success) {
       setContent("");
+      setTyping(false);
       dispatch({ type: MESSAGE_LIST_RESET });
+
+      if (connected) {
+        socket.emit("new message", message);
+      }
     }
 
     dispatch(getMessagesByChat(chatId));
-  }, [dispatch, success, chatId]);
+  }, [dispatch, success, chatId, message, connected]);
 
   useEffect(() => {
     dispatch({ type: CHAT_DETAILS_RESET });
@@ -90,12 +143,55 @@ const Message = () => {
 
     //Dispatch submit message
     if (content.trim() && chat) {
+      setTyping(false);
       dispatch(createMessage(content.trim(), chat._id));
     }
   };
 
   const keyPress = useCallback(
     (e: any) => {
+      if (textareaRef.current?.contains(e.target)) {
+        socket.emit("typing", chatId);
+      }
+
+      // if (!typing) {
+      //   setTyping(false);
+      //   socket.emit("typing", chatId);
+      // }
+
+      // setLastTypingTime(new Date().getTime());
+      // const timerLength = 3000;
+      // setTimeout(() => {
+      //   const timeNow = new Date().getTime();
+
+      //   const timeDiff = timeNow - lastTypingTime;
+      //   if (timeDiff > timerLength && typing) {
+      //     socket.emit("stop typing", chatId);
+      //     setTyping(false);
+      //   }
+      // }, timerLength);
+
+      // const updateTyping = () => {
+      //   if (!typing) {
+      //     //setTyping(true);
+      //     socket.emit("typing", chatId);
+      //   }
+
+      //   setLastTypingTime(new Date().getTime());
+      //   const timerLength = 3000;
+      //   setTimeout(() => {
+      //     const timeNow = new Date().getTime();
+
+      //     const timeDiff = timeNow - lastTypingTime;
+      //     if (timeDiff > timerLength && typing) {
+      //       socket.emit("stop typing", chatId);
+      //       setTyping(false);
+      //     }
+      //   }, timerLength);
+      // };
+
+      // updateTyping();
+
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         //Dispatch submit message
@@ -104,77 +200,68 @@ const Message = () => {
         }
       }
     },
-    [content, dispatch, chat]
+    [content, dispatch, chat, chatId]
   );
 
   useEffect(() => {
-    document.addEventListener("keydown", keyPress);
-    return () => document.removeEventListener("keydown", keyPress);
+    document.body.addEventListener("keydown", keyPress);
+    return () => document.body.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
   return (
     <>
       <div className="message">
         <div className="messageCtn">
-          {loading ? (
-            <div className="loading">
-              <i
-                className="fas fa-spinner fa-spin fa-2x"
-                style={{ color: "rgba(0, 238, 255, 0.9)" }}
-              ></i>
-            </div>
-          ) : (
-            <div className="messageTop">
-              {chat && (
-                <>
-                  <div className="left">
-                    {images && images.length > 1 ? (
-                      images.slice(0, 3).map((image: any, index: number) => (
-                        <Link
-                          to={`/messages/${chat?._id}/participants`}
-                          key={index}
-                          className="linkCtn"
-                        >
-                          <img src={image} alt="profile" className="groupChat" />
-                        </Link>
-                      ))
-                    ) : (
-                      <Link to={`/profile/${userIds}`}>
-                        <img className="profile" src={images![0]} alt="profile" />
+          <div className="messageTop">
+            {chat && (
+              <>
+                <div className="left">
+                  {images && images.length > 1 ? (
+                    images.slice(0, 3).map((image: any, index: number) => (
+                      <Link
+                        to={`/messages/${chat?._id}/participants`}
+                        key={index}
+                        className="linkCtn"
+                      >
+                        <img src={image} alt="profile" className="groupChat" />
                       </Link>
-                    )}
-                  </div>
-                  {images && images?.length > 3 && (
-                    <div className="number">
-                      <p className="rest">+{images.length - 3}</p>
-                    </div>
+                    ))
+                  ) : (
+                    <Link to={`/profile/${userIds}`}>
+                      <img className="profile" src={images![0]} alt="profile" />
+                    </Link>
                   )}
-
-                  <div className="middle">
-                    <p className="top">
-                      <span>{getChatName(chat).substring(0, 26)}</span>
-                      {getChatName(chat).length > 26 && <span>...</span>}
-                    </p>
-                    {users?.length === 1 && <p className="bottom">@{username}</p>}
+                </div>
+                {images && images?.length > 3 && (
+                  <div className="number">
+                    <p className="rest">+{images.length - 3}</p>
                   </div>
-                  <Link to={`/messages/${chatId}/info`} className="right">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M11.99 22C6.46846 21.9945 1.99632 17.5149 2 11.9933C2.00368 6.47179 6.48179 1.99816 12.0033 2C17.5249 2.00184 22 6.47845 22 12C21.9967 17.5254 17.5154 22.0022 11.99 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.6845 16.444 4.10977 12.0425 4.08599C7.64111 4.06245 4.04732 7.59876 4 12V12.172ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
-                        fill="#1A91DA"
-                      />
-                    </svg>
-                  </Link>
-                </>
-              )}
-            </div>
-          )}
+                )}
+
+                <div className="middle">
+                  <p className="top">
+                    <span>{getChatName(chat).substring(0, 26)}</span>
+                    {getChatName(chat).length > 26 && <span>...</span>}
+                  </p>
+                  {users?.length === 1 && <p className="bottom">@{username}</p>}
+                </div>
+                <Link to={`/messages/${chatId}/info`} className="right">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.99 22C6.46846 21.9945 1.99632 17.5149 2 11.9933C2.00368 6.47179 6.48179 1.99816 12.0033 2C17.5249 2.00184 22 6.47845 22 12C21.9967 17.5254 17.5154 22.0022 11.99 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.6845 16.444 4.10977 12.0425 4.08599C7.64111 4.06245 4.04732 7.59876 4 12V12.172ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+                      fill="#1A91DA"
+                    />
+                  </svg>
+                </Link>
+              </>
+            )}
+          </div>
 
           <div className="messagesWrapper">
             {users?.length === 1 && (
@@ -219,6 +306,12 @@ const Message = () => {
                 ))}
             </div>
           </div>
+
+          {typing && (
+            <div className="typingWrap">
+              <img src="/images/dots.gif" alt="typing" className="typing" />
+            </div>
+          )}
 
           <div className="textInputCtn">
             <form className="textInput" onSubmit={submitHandler}>

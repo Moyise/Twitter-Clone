@@ -7,7 +7,7 @@ interface IPost extends Document {
   likes: object[];
   retweetUsers: object[];
   retweetData: string;
-  replyTo: string;
+  replyTo: any;
 }
 
 const postSchema: Schema = new Schema(

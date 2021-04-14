@@ -26,6 +26,26 @@
         .label {
           padding-left: 20px;
         }
+        .icon {
+          position: relative;
+          .notificationCtn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #1a85c7;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .notification {
+              font-weight: 600;
+              font-size: 12px;
+              color: #ffffff;
+            }
+          }
+        }
         .profile {
           padding-left: 10px;
           img {

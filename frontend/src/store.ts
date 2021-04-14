@@ -28,6 +28,12 @@ import {
   chatListReducer,
 } from "./reducers/chatReducers";
 import { messageCreateReducer, messageListReducer } from "./reducers/messageReducers";
+import {
+  notificationLatestReducer,
+  notificationListReducer,
+  notificationOpenAllReducer,
+  notificationOpenReducer,
+} from "./reducers/notificationReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -52,6 +58,10 @@ const reducer = combineReducers({
   chatGroupName: chatGroupeNameUpdateReducer,
   messageCreate: messageCreateReducer,
   messageList: messageListReducer,
+  notificationList: notificationListReducer,
+  notificationOpen: notificationOpenReducer,
+  notificationOpenAll: notificationOpenAllReducer,
+  notificationLatest: notificationLatestReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

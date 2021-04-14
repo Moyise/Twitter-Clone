@@ -68,14 +68,14 @@
       }
     }
 
-    .loading {
-      width: 100%;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      flex: 1;
-    }
+    // .loading {
+    //   width: 100%;
+    //   padding: 10px;
+    //   display: flex;
+    //   align-items: center;
+    //   flex-direction: column;
+    //   flex: 1;
+    // }
 
     .messagesWrapper {
       display: flex;
@@ -175,6 +175,17 @@
       }
       &::-webkit-scrollbar-thumb {
         background-color: #707070;
+      }
+    }
+
+    .typingWrap {
+      padding-left: 40px;
+      padding-top: 8px;
+      .typing {
+        width: 50px;
+        height: 20px;
+        border-radius: 10px;
+        object-fit: contain;
       }
     }
 

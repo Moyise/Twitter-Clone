@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { unreadChats } from "../../actions/chatActions";
+import { getUnreadNotifications } from "../../actions/notificationActions";
 import { logout } from "../../actions/userActions";
+import { socket } from "../../service/socket";
 import { reducerState } from "../../store";
-import { IUserAuth } from "../../types";
+import { IChats, INotifications, IUserAuth } from "../../types";
 import "./sidebar.scss";
 
 const Sidebar = () => {
@@ -11,6 +14,25 @@ const Sidebar = () => {
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const chatList: IChats = useSelector((state: reducerState) => state.chatList);
+  const { chats } = chatList;
+
+  const notificationList: INotifications = useSelector(
+    (state: reducerState) => state.notificationList
+  );
+  const { notifications } = notificationList;
+
+  useEffect(() => {
+    const eventHandler = () => {
+      dispatch(getUnreadNotifications());
+    };
+
+    socket.on("notification received", eventHandler);
+
+    dispatch(getUnreadNotifications());
+    dispatch(unreadChats());
+  }, [dispatch]);
 
   const logoutHandler = () => {
     //dispatch logout
@@ -76,12 +98,12 @@ const Sidebar = () => {
               </div>
               <p className="label">Explore</p>
             </Link>
-            <li className="links">
+            <Link to="/notifications" className="links">
               <div className="icon">
                 <svg
-                  width="31"
+                  width="30"
                   height="30"
-                  viewBox="0 0 31 30"
+                  viewBox="0 0 30 30"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -92,9 +114,14 @@ const Sidebar = () => {
                     strokeWidth="2"
                   />
                 </svg>
+                {notifications && (
+                  <div className="notificationCtn">
+                    <span className="notification">{notifications.length}</span>
+                  </div>
+                )}
               </div>
               <p className="label">Notifications</p>
-            </li>
+            </Link>
             <Link to="/messages" className="links">
               <div className="icon">
                 <svg
@@ -110,6 +137,11 @@ const Sidebar = () => {
                     fillOpacity="0.9"
                   />
                 </svg>
+                {chats && (
+                  <div className="notificationCtn">
+                    <span className="notification">{chats.length}</span>
+                  </div>
+                )}
               </div>
               <p className="label">Messages</p>
             </Link>

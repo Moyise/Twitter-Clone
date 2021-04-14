@@ -1,25 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./homeScreen.scss";
-import PostCard from "../../components/PostCard/PostCard";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "../../store";
 import { ICreatePost, IPostReply, IPosts, IUserAuth, IDelete } from "../../types";
 import { useHistory } from "react-router";
 import { createPost, listPosts } from "../../actions/postActions";
 import { POST_CREATE_RESET } from "../../constants/postConstants";
+import { socket } from "../../service/socket";
+import PostCard from "../../components/PostCard/PostCard";
+import "./homeScreen.scss";
 
 const HomeScreen = () => {
   const history = useHistory();
-
   const textareaRef = useRef<any>(null);
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const [connected, setConnected] = useState(false);
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
   const postList: IPosts = useSelector((state: reducerState) => state.postList);
-  const { posts, loading, error: postError } = postList;
+  const { posts, loading } = postList;
 
   const postCreate: ICreatePost = useSelector((state: reducerState) => state.postCreate);
   const { success } = postCreate;
@@ -31,6 +32,29 @@ const HomeScreen = () => {
   const { success: deleteSuccess } = postDelete;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+
+    //dispatch posts
+    dispatch(listPosts());
+  }, [history, userInfo, dispatch]);
+
+  useEffect(() => {
+    if (userInfo) {
+      socket.emit("setup", userInfo);
+    }
+
+    const eventHandler = () => setConnected(true);
+    socket.on("connected", eventHandler);
+
+    // unsubscribe from event for preventing memory leaks
+    return () => {
+      socket.off("connected", eventHandler);
+    };
+  }, [userInfo]);
 
   useEffect(() => {
     textareaRef.current.style.height = "0px";
@@ -45,15 +69,6 @@ const HomeScreen = () => {
       setContent("");
     }
   }, [success, dispatch, replySuccess, deleteSuccess]);
-
-  useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
-    }
-
-    //dispatch posts
-    dispatch(listPosts());
-  }, [history, userInfo, dispatch]);
 
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,7 +112,7 @@ const HomeScreen = () => {
                 </div>
               </form>
               {error && <p className="errorMessage">{error}</p>}
-              {postError && <p className="errorMessage">{postError}</p>}
+              {/* {postError && <p className="errorMessage">{postError}</p>} */}
             </div>
           </div>
           <div className="bar"></div>

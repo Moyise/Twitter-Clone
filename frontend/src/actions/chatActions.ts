@@ -168,3 +168,32 @@ export const updateGroupName = (chatId: string, groupName: string) => async (
     });
   }
 };
+
+export const unreadChats = () => async (dispatch: any, getState: any) => {
+  try {
+    dispatch({ type: CHAT_LIST_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      params: {
+        unreadOnly: true,
+      },
+    };
+
+    const { data } = await axios.get(`/api/chats`, config);
+
+    dispatch({ type: CHAT_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CHAT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

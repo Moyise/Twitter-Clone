@@ -6,15 +6,10 @@ import React, {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { getChatsById, updateGroupName } from "../../actions/chatActions";
+import { updateGroupName } from "../../actions/chatActions";
 import { reducerState } from "../../store";
-import { IChat, IChatGroupName, IUserAuth } from "../../types";
+import { IChat, IChatGroupName } from "../../types";
 import "./editGroupInfo.scss";
-
-interface IParams {
-  id: string;
-}
 
 const EditGroupInfo: FunctionComponent<IChat> = ({
   chat,
@@ -23,10 +18,7 @@ const EditGroupInfo: FunctionComponent<IChat> = ({
   name,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const match = useRouteMatch<IParams>();
-  const history = useHistory();
   const dispatch = useDispatch();
-  const chatId = match.params.id;
 
   const [groupName, setGroupName] = useState("");
   const [error, setError] = useState("");

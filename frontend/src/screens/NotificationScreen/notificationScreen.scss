@@ -1,0 +1,37 @@
+.notificationScreen {
+  max-width: 600px;
+  width: 100%;
+  min-height: 100vh;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  .notificationCtn {
+    .notificationTop {
+      position: sticky;
+      top: 0;
+      background-color: #000000;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 14px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 999;
+      .title {
+        font-style: normal;
+        font-weight: 900;
+        font-size: 18px;
+      }
+      .icon {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .loading {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
