@@ -10,6 +10,11 @@ const ChatCard: FunctionComponent<IChat> = ({ chat }) => {
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
+  let active;
+  if (chat && chat.latestMessage && userInfo) {
+    active = !chat.latestMessage.readBy.includes(userInfo._id);
+  }
+
   function getChatName(chat: any) {
     let chatName = chat?.chatName;
     if (!chatName) {
@@ -44,7 +49,7 @@ const ChatCard: FunctionComponent<IChat> = ({ chat }) => {
   return (
     <>
       {chat && (
-        <div className="chatCard">
+        <div className={active ? "chatCard active" : "chatCard"}>
           <div className="left">
             {getChatImageElements(chat).length > 1 ? (
               getChatImageElements(chat)

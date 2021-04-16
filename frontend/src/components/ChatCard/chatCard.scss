@@ -66,4 +66,12 @@
       color: rgba(255, 255, 255, 0.4);
     }
   }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.chatCard.active {
+  background: rgba(0, 158, 255, 0.1);
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Chat from "../models/chatModel";
+import Message from "../models/messageModel";
 import User from "../models/userModel";
 
 //@desc Create chat
@@ -129,5 +130,28 @@ export const updateGroupName = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(404).json({ message: "Can't update chat" });
+  }
+};
+
+// @update all messages to read
+// @route PUT /api/chats/:chatId/messages/markAsRead
+// @access Private
+
+export const markAllMessagesAsRead = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body.userInfo._id;
+    const chatId = req.params.chatId;
+    const messages = await Message.updateMany(
+      { chat: chatId },
+      {
+        $addToSet: { readBy: userId },
+      }
+    );
+
+    if (messages) {
+      res.status(200).json("success");
+    }
+  } catch (error) {
+    res.status(404).json({ message: "No messages Found" });
   }
 };

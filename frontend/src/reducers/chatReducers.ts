@@ -12,6 +12,9 @@ import {
   CHAT_GROUP_NAME_UPDATE_RESET,
   CHAT_GROUP_NAME_UPDATE_SUCCESS,
   CHAT_LIST_FAIL,
+  CHAT_LIST_READ_FAIL,
+  CHAT_LIST_READ_REQUEST,
+  CHAT_LIST_READ_SUCCESS,
   CHAT_LIST_REQUEST,
   CHAT_LIST_SUCCESS,
 } from "../constants/chatConstants";
@@ -81,6 +84,22 @@ export const chatGroupeNameUpdateReducer = (state = {}, { type, payload }: IActi
       return { loading: false, error: payload };
     case CHAT_GROUP_NAME_UPDATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const markAllMessagesReadReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case CHAT_LIST_READ_REQUEST:
+      return { loading: true, success: false };
+
+    case CHAT_LIST_READ_SUCCESS:
+      return { loading: false, success: true };
+
+    case CHAT_LIST_READ_FAIL:
+      return { loading: false, error: payload };
+
     default:
       return state;
   }

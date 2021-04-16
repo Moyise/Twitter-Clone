@@ -12,6 +12,9 @@ import {
   CHAT_GROUP_NAME_UPDATE_RESET,
   CHAT_GROUP_NAME_UPDATE_SUCCESS,
   CHAT_LIST_FAIL,
+  CHAT_LIST_READ_FAIL,
+  CHAT_LIST_READ_REQUEST,
+  CHAT_LIST_READ_SUCCESS,
   CHAT_LIST_REQUEST,
   CHAT_LIST_SUCCESS,
 } from "../constants/chatConstants";
@@ -190,6 +193,36 @@ export const unreadChats = () => async (dispatch: any, getState: any) => {
   } catch (error) {
     dispatch({
       type: CHAT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const markAllMessagesAsRead = (chatId: string) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: CHAT_LIST_READ_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.put(`/api/chats/${chatId}/messages/markAsRead`, { userInfo }, config);
+
+    dispatch({ type: CHAT_LIST_READ_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: CHAT_LIST_READ_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

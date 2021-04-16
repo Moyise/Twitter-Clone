@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { unreadChats } from "../../actions/chatActions";
+import { getChats, unreadChats } from "../../actions/chatActions";
 import { getUnreadNotifications } from "../../actions/notificationActions";
 import { logout } from "../../actions/userActions";
 import { socket } from "../../service/socket";
@@ -23,15 +23,33 @@ const Sidebar = () => {
   );
   const { notifications } = notificationList;
 
+  const ntf = notifications.filter((notification) => notification.opened === false);
+
+  let userChats;
+  if (userInfo && chats) {
+    userChats = chats?.filter((chat) => {
+      if (chat.latestMessage) {
+        return !chat.latestMessage.readBy.includes(userInfo._id);
+      } else {
+        return 0;
+      }
+    });
+  }
+
   useEffect(() => {
     const eventHandler = () => {
       dispatch(getUnreadNotifications());
     };
+    const messageHandler = () => {
+      dispatch(getChats());
+    };
 
     socket.on("notification received", eventHandler);
+    socket.on("message received", messageHandler);
 
     dispatch(getUnreadNotifications());
-    dispatch(unreadChats());
+    dispatch(getChats());
+    //dispatch(unreadChats());
   }, [dispatch]);
 
   const logoutHandler = () => {
@@ -114,9 +132,9 @@ const Sidebar = () => {
                     strokeWidth="2"
                   />
                 </svg>
-                {notifications && (
+                {ntf && ntf.length > 0 && (
                   <div className="notificationCtn">
-                    <span className="notification">{notifications.length}</span>
+                    <span className="notification">{ntf.length}</span>
                   </div>
                 )}
               </div>
@@ -137,9 +155,9 @@ const Sidebar = () => {
                     fillOpacity="0.9"
                   />
                 </svg>
-                {chats && (
+                {userChats && userChats.length > 0 && (
                   <div className="notificationCtn">
-                    <span className="notification">{chats.length}</span>
+                    <span className="notification">{userChats.length}</span>
                   </div>
                 )}
               </div>

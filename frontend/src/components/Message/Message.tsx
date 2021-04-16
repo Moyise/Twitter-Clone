@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
-import { getChats, getChatsById } from "../../actions/chatActions";
+import { getChats, getChatsById, markAllMessagesAsRead } from "../../actions/chatActions";
 import { createMessage, getMessagesByChat } from "../../actions/messageActions";
 import { CHAT_DETAILS_RESET } from "../../constants/chatConstants";
 import { MESSAGE_LIST_RESET } from "../../constants/messageConstants";
@@ -110,7 +110,9 @@ const Message = () => {
       }
     }
 
+    dispatch(getChats());
     dispatch(getMessagesByChat(chatId));
+    dispatch(markAllMessagesAsRead(chatId));
   }, [dispatch, success, chatId, message, connected]);
 
   useEffect(() => {
@@ -153,44 +155,6 @@ const Message = () => {
       if (textareaRef.current?.contains(e.target)) {
         socket.emit("typing", chatId);
       }
-
-      // if (!typing) {
-      //   setTyping(false);
-      //   socket.emit("typing", chatId);
-      // }
-
-      // setLastTypingTime(new Date().getTime());
-      // const timerLength = 3000;
-      // setTimeout(() => {
-      //   const timeNow = new Date().getTime();
-
-      //   const timeDiff = timeNow - lastTypingTime;
-      //   if (timeDiff > timerLength && typing) {
-      //     socket.emit("stop typing", chatId);
-      //     setTyping(false);
-      //   }
-      // }, timerLength);
-
-      // const updateTyping = () => {
-      //   if (!typing) {
-      //     //setTyping(true);
-      //     socket.emit("typing", chatId);
-      //   }
-
-      //   setLastTypingTime(new Date().getTime());
-      //   const timerLength = 3000;
-      //   setTimeout(() => {
-      //     const timeNow = new Date().getTime();
-
-      //     const timeDiff = timeNow - lastTypingTime;
-      //     if (timeDiff > timerLength && typing) {
-      //       socket.emit("stop typing", chatId);
-      //       setTyping(false);
-      //     }
-      //   }, timerLength);
-      // };
-
-      // updateTyping();
 
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
