@@ -5,7 +5,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   user-select: none;
   cursor: pointer;
-  overflow: hidden;
   .postCardTop {
     display: flex;
     align-items: center;
@@ -176,7 +175,6 @@
         border-radius: 4px;
         width: 200px;
         min-height: 50px;
-        z-index: 12;
         visibility: hidden;
         opacity: 0;
         transition: 0.3s;

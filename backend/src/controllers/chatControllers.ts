@@ -39,7 +39,7 @@ export const createChat = async (req: Request, res: Response) => {
 
 export const createGroupChat = async (req: Request, res: Response) => {
   try {
-    const users = req.body.users;
+    let users = req.body.users;
     users.push(req.body.user);
 
     const chat = await Chat.create({
@@ -153,5 +153,50 @@ export const markAllMessagesAsRead = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(404).json({ message: "No messages Found" });
+  }
+};
+
+// @desc Add users to chat groupe
+// @route PUT /api/chats/:id/group
+// @access private
+
+export const updateGroupChat = async (req: Request, res: Response) => {
+  try {
+    const chatId = req.params.id;
+    const users = req.body.users;
+    const chat = await Chat.findByIdAndUpdate(chatId, { $addToSet: { users: users } });
+    if (chat) {
+      res.status(200).json({ message: "Success" });
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Can't update chat" });
+  }
+};
+
+// @desc Leave chat groupe
+// @route PUT /api/chats/:id/leave
+// @access private
+
+export const leaveGroupChat = async (req: Request, res: Response) => {
+  try {
+    const chatId = req.params.id;
+    const userId = req.body.user._id;
+
+    const chat = await Chat.findByIdAndUpdate(
+      chatId,
+      { $pull: { users: userId } },
+      { new: true }
+    );
+
+    if (chat?.users.length === 0) {
+      await Chat.findByIdAndRemove(chatId);
+      const chats = await Message.find({ chat: chatId }).deleteMany({ chat: chatId });
+    }
+
+    res.status(200).json({ message: "Success" });
+  } catch (error) {
+    res.status(404).json({ message: "Error leaving chat" });
   }
 };

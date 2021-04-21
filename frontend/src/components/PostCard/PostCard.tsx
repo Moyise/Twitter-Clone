@@ -35,6 +35,17 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
       }
       setOpen(false);
     });
+
+    let refVar = ref.current;
+
+    return () => {
+      document.body.removeEventListener("click", (e: any) => {
+        if (refVar?.contains(e.target)) {
+          return;
+        }
+        setOpen(false);
+      });
+    };
   }, []);
 
   const likesHandler = () => {
@@ -129,7 +140,7 @@ const PostCard: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                     />
                   </svg>
                 </span>
-                <span className="number">10</span>
+                <span className="number"></span>
               </div>
               <div
                 className={retweeted ? "middle-c active" : "middle-c"}

@@ -7,10 +7,18 @@ import {
   CHAT_DETAILS_REQUEST,
   CHAT_DETAILS_RESET,
   CHAT_DETAILS_SUCCESS,
+  CHAT_GROUP_LEAVE_FAIL,
+  CHAT_GROUP_LEAVE_REQUEST,
+  CHAT_GROUP_LEAVE_RESET,
+  CHAT_GROUP_LEAVE_SUCCESS,
   CHAT_GROUP_NAME_UPDATE_FAIL,
   CHAT_GROUP_NAME_UPDATE_REQUEST,
   CHAT_GROUP_NAME_UPDATE_RESET,
   CHAT_GROUP_NAME_UPDATE_SUCCESS,
+  CHAT_GROUP_UPDATE_FAIL,
+  CHAT_GROUP_UPDATE_REQUEST,
+  CHAT_GROUP_UPDATE_RESET,
+  CHAT_GROUP_UPDATE_SUCCESS,
   CHAT_LIST_FAIL,
   CHAT_LIST_READ_FAIL,
   CHAT_LIST_READ_REQUEST,
@@ -99,6 +107,37 @@ export const markAllMessagesReadReducer = (state = {}, { type, payload }: IActio
 
     case CHAT_LIST_READ_FAIL:
       return { loading: false, error: payload };
+
+    default:
+      return state;
+  }
+};
+
+export const chatGroupeUpdateReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case CHAT_GROUP_UPDATE_REQUEST:
+      return { loading: true };
+    case CHAT_GROUP_UPDATE_SUCCESS:
+      return { loading: false, success: true };
+    case CHAT_GROUP_UPDATE_FAIL:
+      return { loading: false, error: payload };
+    case CHAT_GROUP_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const chatGroupeLeaveReducer = (state = {}, { type, payload }: IAction) => {
+  switch (type) {
+    case CHAT_GROUP_LEAVE_REQUEST:
+      return { loading: true };
+    case CHAT_GROUP_LEAVE_SUCCESS:
+      return { loading: false, success: true };
+    case CHAT_GROUP_LEAVE_FAIL:
+      return { loading: false, error: payload };
+    case CHAT_GROUP_LEAVE_RESET:
+      return {};
 
     default:
       return state;

@@ -7,10 +7,16 @@ import {
   CHAT_DETAILS_FAIL,
   CHAT_DETAILS_REQUEST,
   CHAT_DETAILS_SUCCESS,
+  CHAT_GROUP_LEAVE_FAIL,
+  CHAT_GROUP_LEAVE_REQUEST,
+  CHAT_GROUP_LEAVE_SUCCESS,
   CHAT_GROUP_NAME_UPDATE_FAIL,
   CHAT_GROUP_NAME_UPDATE_REQUEST,
   CHAT_GROUP_NAME_UPDATE_RESET,
   CHAT_GROUP_NAME_UPDATE_SUCCESS,
+  CHAT_GROUP_UPDATE_FAIL,
+  CHAT_GROUP_UPDATE_REQUEST,
+  CHAT_GROUP_UPDATE_SUCCESS,
   CHAT_LIST_FAIL,
   CHAT_LIST_READ_FAIL,
   CHAT_LIST_READ_REQUEST,
@@ -223,6 +229,68 @@ export const markAllMessagesAsRead = (chatId: string) => async (
   } catch (error) {
     dispatch({
       type: CHAT_LIST_READ_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateGroupChat = (chatId: string, users: object[]) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: CHAT_GROUP_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/chats/group/${chatId}`, { users }, config);
+
+    dispatch({ type: CHAT_GROUP_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CHAT_GROUP_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const leaveGroupChat = (chatId: string) => async (
+  dispatch: any,
+  getState: any
+) => {
+  try {
+    dispatch({ type: CHAT_GROUP_LEAVE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/chats/${chatId}/leave`, {}, config);
+
+    dispatch({ type: CHAT_GROUP_LEAVE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CHAT_GROUP_LEAVE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

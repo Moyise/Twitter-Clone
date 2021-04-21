@@ -1,3 +1,5 @@
+$breakpoint-tablet: 988px;
+
 .messagesScreen {
   max-width: 400px;
   width: 100%;
@@ -56,5 +58,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: $breakpoint-tablet) {
+  .messagesScreen {
+    max-width: 600px;
   }
 }

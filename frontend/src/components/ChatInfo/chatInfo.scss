@@ -2,6 +2,7 @@
   max-width: 550px;
   width: 100%;
   max-height: 100vh;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   overflow-y: hidden;
   .chatInfoCtn {
@@ -117,6 +118,21 @@
       }
       &:hover {
         background: rgba(110, 190, 255, 0.05);
+      }
+    }
+    .leave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0;
+      cursor: pointer;
+      p {
+        font-weight: normal;
+        font-size: 14px;
+        color: #ac1b5e;
+      }
+      &:hover {
+        background: rgba(155, 10, 71, 0.1);
       }
     }
   }

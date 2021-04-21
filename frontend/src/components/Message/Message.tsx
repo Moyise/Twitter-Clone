@@ -44,9 +44,10 @@ const Message = () => {
   const { messages } = messageList;
 
   const users = chat?.users.filter((user) => user._id !== userInfo?._id);
+  const allUsers = chat?.users.map((user) => user);
   const userIds = users?.map((user) => user._id);
   const createdAt = users?.map((user) => user.createdAt);
-  const images = users?.map((user) => user.profilePic);
+  const images = allUsers?.map((user) => user.profilePic);
   const username = users?.map((user) => user.username);
   const firstName = users?.map((user) => user.firstName);
   const bio = users?.map((user) => user.bio);
@@ -177,6 +178,22 @@ const Message = () => {
       <div className="message">
         <div className="messageCtn">
           <div className="messageTop">
+            <div className="back">
+              <svg
+                onClick={() => history.push(`/messages`)}
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.83 11L11.41 7.41L10 6L4 12L10 18L11.41 16.59L7.83 13H20V11H7.83Z"
+                  fill="#1A91DA"
+                />
+              </svg>
+            </div>
+
             {chat && (
               <>
                 <div className="left">
@@ -228,7 +245,7 @@ const Message = () => {
           </div>
 
           <div className="messagesWrapper">
-            {users?.length === 1 && (
+            {chat && !chat.isGroupChat && (
               <div className="userDescription">
                 <div className="userCtn">
                   <div className="user">

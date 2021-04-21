@@ -29,7 +29,6 @@ import {
   POST_PIN_FAIL,
 } from "../constants/postConstants";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
-import { emitNotification } from "../service/socket";
 
 export const listPosts = () => async (dispatch: any, getState: any) => {
   try {
@@ -143,16 +142,10 @@ export const likePost = (postId: string, user: object) => async (dispatch: any) 
   }
 };
 
-export const retweetPost = (postId: string, user: object) => async (
-  dispatch: any,
-  getState: any
-) => {
+export const retweetPost = (postId: string, user: object) => async (dispatch: any) => {
   try {
     dispatch({ type: POST_RETWEET_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
     const config = {
       headers: {
         "Content-Type": "application/json",

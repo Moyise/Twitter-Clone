@@ -1,16 +1,25 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { getChats, unreadChats } from "../../actions/chatActions";
+import { Link, useRouteMatch } from "react-router-dom";
+import { getChats } from "../../actions/chatActions";
 import { getUnreadNotifications } from "../../actions/notificationActions";
 import { logout } from "../../actions/userActions";
 import { socket } from "../../service/socket";
 import { reducerState } from "../../store";
 import { IChats, INotifications, IUserAuth } from "../../types";
 import "./sidebar.scss";
+import twitter from "../../img/twitter.svg";
+
+interface IParams {
+  id: string;
+}
 
 const Sidebar = () => {
+  const match = useRouteMatch<IParams>();
   const dispatch = useDispatch();
+  let ntf;
+  const path = match.path;
+  const url = match.url;
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
@@ -23,7 +32,9 @@ const Sidebar = () => {
   );
   const { notifications } = notificationList;
 
-  const ntf = notifications.filter((notification) => notification.opened === false);
+  if (notifications) {
+    ntf = notifications.filter((notification) => notification.opened === false);
+  }
 
   let userChats;
   if (userInfo && chats) {
@@ -62,22 +73,10 @@ const Sidebar = () => {
       <div className="sidebar">
         <div className="sidebarContainer">
           <div className="sidebarLogo">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 30 30"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M24.9938 8.35999C26.1143 7.6901 26.9527 6.63528 27.3525 5.39249C26.2996 6.01724 25.1476 6.45733 23.9463 6.69374C22.2807 4.9319 19.6419 4.50314 17.5043 5.64706C15.3666 6.79097 14.2594 9.22435 14.8013 11.5875C10.4883 11.371 6.46998 9.33363 3.74627 5.98249C2.32482 8.43426 3.05121 11.5685 5.40627 13.145C4.55466 13.1176 3.72193 12.887 2.97752 12.4725C2.97752 12.495 2.97752 12.5175 2.97752 12.54C2.97801 15.0939 4.77798 17.2938 7.28127 17.8C6.49135 18.0149 5.66278 18.0465 4.85877 17.8925C5.56277 20.0766 7.57571 21.5728 9.87002 21.6175C7.96981 23.1089 5.62311 23.9177 3.20752 23.9137C2.77936 23.9144 2.35153 23.8897 1.92627 23.84C4.37926 25.4163 7.23423 26.2529 10.15 26.25C14.2066 26.2778 18.1051 24.6786 20.9734 21.81C23.8418 18.9414 25.4407 15.0428 25.4125 10.9862C25.4125 10.7537 25.4071 10.5225 25.3963 10.2925C26.4468 9.53324 27.3535 8.59267 28.0738 7.51499C27.095 7.94881 26.0569 8.23364 24.9938 8.35999Z"
-                fill="white"
-                fillOpacity="0.9"
-              />
-            </svg>
+            <img src={twitter} alt="twitter" />
           </div>
           <ul className="sidebarLinks">
-            <Link to="/home" className="links">
+            <Link to="/home" className={path === "/home" ? "links active" : "links"}>
               <div className="icon">
                 <svg
                   width="31"
@@ -96,7 +95,14 @@ const Sidebar = () => {
               </div>
               <p className="label">Home</p>
             </Link>
-            <Link to="/search/posts" className="links">
+            <Link
+              to="/search/posts"
+              className={
+                url === "/search/posts" || url === "/search/users"
+                  ? "links active"
+                  : "links"
+              }
+            >
               <div className="icon">
                 <svg
                   width="31"
@@ -116,7 +122,10 @@ const Sidebar = () => {
               </div>
               <p className="label">Explore</p>
             </Link>
-            <Link to="/notifications" className="links">
+            <Link
+              to="/notifications"
+              className={path === "/notifications" ? "links active" : "links"}
+            >
               <div className="icon">
                 <svg
                   width="30"
@@ -140,7 +149,17 @@ const Sidebar = () => {
               </div>
               <p className="label">Notifications</p>
             </Link>
-            <Link to="/messages" className="links">
+            <Link
+              to="/messages"
+              className={
+                path === `/messages` ||
+                path === `/messages/:id` ||
+                path === `/messages/:id/info` ||
+                path === `/messages/:id/participants`
+                  ? "links active"
+                  : "links"
+              }
+            >
               <div className="icon">
                 <svg
                   width="30"
@@ -163,7 +182,16 @@ const Sidebar = () => {
               </div>
               <p className="label">Messages</p>
             </Link>
-            <Link to={`/profile/${userInfo?._id}`} className="links">
+            <Link
+              to={`/profile/${userInfo?._id}`}
+              className={
+                url === `/profile/${userInfo?._id}` ||
+                url === `/profile/${userInfo?._id}/following` ||
+                url === `/profile/${userInfo?._id}/followers`
+                  ? "links active"
+                  : "links"
+              }
+            >
               <div className="icon">
                 <svg
                   width="31"
@@ -201,7 +229,7 @@ const Sidebar = () => {
               </div>
               <p className="label">Log out</p>
             </li>
-            <li className="lastLink">
+            <Link to={`/profile/${userInfo?._id}`} className="lastLink">
               <div className="profile">
                 <img src={userInfo?.profilePic} alt="profile" />
               </div>
@@ -228,7 +256,7 @@ const Sidebar = () => {
 
                 <p className="bottom">@{userInfo?.username}</p>
               </div>
-            </li>
+            </Link>
           </ul>
         </div>
       </div>

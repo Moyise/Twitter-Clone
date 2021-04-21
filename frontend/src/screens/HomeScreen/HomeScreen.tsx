@@ -14,7 +14,6 @@ const HomeScreen = () => {
   const textareaRef = useRef<any>(null);
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
-  const [connected, setConnected] = useState(false);
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
@@ -46,14 +45,6 @@ const HomeScreen = () => {
     if (userInfo) {
       socket.emit("setup", userInfo);
     }
-
-    const eventHandler = () => setConnected(true);
-    socket.on("connected", eventHandler);
-
-    // unsubscribe from event for preventing memory leaks
-    return () => {
-      socket.off("connected", eventHandler);
-    };
   }, [userInfo]);
 
   useEffect(() => {

@@ -1,8 +1,10 @@
+$breakpoint-tablet: 988px;
+
 .emptyMessage {
   max-width: 550px;
-  width: 100%;
   height: 100vh;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,5 +34,11 @@
       color: rgba(255, 255, 255, 0.9);
       cursor: pointer;
     }
+  }
+}
+
+@media screen and (max-width: $breakpoint-tablet) {
+  .emptyMessage {
+    // display: none;
   }
 }

@@ -82,7 +82,7 @@ const RightBar = () => {
             <div>
               {users?.length &&
                 users
-                  .slice(0, 3)
+                  .slice(0, 4)
                   .map((user, index) => (
                     <UsersCard key={index} user={user} onClick={followHandler} />
                   ))}

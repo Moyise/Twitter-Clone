@@ -1,3 +1,5 @@
+$breakpoint-small: 400px;
+
 .loginScreen {
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
@@ -109,6 +111,39 @@
           color: #1a85c7;
           padding-right: 10px;
           cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-small) {
+  .loginScreen {
+    .loginBackground {
+      .loginContainer {
+        .loginTitle {
+          font-size: 24px;
+        }
+        .loginForm {
+          .loginFormGroup {
+            .formLabel {
+              font-size: 14px;
+            }
+          }
+          .formSubmit {
+            height: 36px;
+            font-size: 18px;
+          }
+        }
+        .testLogin {
+          height: 36px;
+          font-size: 18px;
+        }
+
+        .bottomLinks {
+          .link {
+            font-size: 14px;
+          }
         }
       }
     }

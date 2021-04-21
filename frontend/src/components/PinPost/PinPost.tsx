@@ -6,6 +6,7 @@ import { deletePost, likePost, pinPost, retweetPost } from "../../actions/postAc
 import { reducerState } from "../../store";
 import { timeDifference } from "../../timeFunction";
 import { IPost, IUserAuth } from "../../types";
+import Modal from "../Modal/Modal";
 import "./pinPost.scss";
 
 interface IParams {
@@ -116,7 +117,7 @@ const PinPost: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
                       />
                     </svg>
                   </span>
-                  <span className="number">10</span>
+                  <span className="number"></span>
                 </div>
                 <div
                   className={retweeted ? "middle-c active" : "middle-c"}
@@ -253,6 +254,7 @@ const PinPost: FunctionComponent<IPost> = ({ post, liked, retweeted }) => {
             </div>
           </div>
           <div className="bar"></div>
+          <Modal post={post} showModal={showModal} setShowModal={setShowModal} />
         </div>
       )}
     </>

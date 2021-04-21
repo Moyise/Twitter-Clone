@@ -34,13 +34,32 @@ const MessagesScreen = () => {
   );
   const { success: createChatSuccess } = messageCreate;
 
+  const chatGroupLeave: IMessageCreate = useSelector(
+    (state: reducerState) => state.chatGroupLeave
+  );
+  const { success: leaveGroupSuccess } = chatGroupLeave;
+
+  const chatGroupUpdate: IMessageCreate = useSelector(
+    (state: reducerState) => state.chatGroupUpdate
+  );
+  const { success: chatGroupUpdateSuccess } = chatGroupUpdate;
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     }
 
     dispatch(getChats());
-  }, [userInfo, history, dispatch, success, chatNameSuccess, createChatSuccess]);
+  }, [
+    userInfo,
+    history,
+    dispatch,
+    success,
+    chatNameSuccess,
+    createChatSuccess,
+    leaveGroupSuccess,
+    chatGroupUpdateSuccess,
+  ]);
 
   return (
     <>

@@ -24,7 +24,9 @@ import {
 import {
   chatCreateReducer,
   chatDetailsReducer,
+  chatGroupeLeaveReducer,
   chatGroupeNameUpdateReducer,
+  chatGroupeUpdateReducer,
   chatListReducer,
   markAllMessagesReadReducer,
 } from "./reducers/chatReducers";
@@ -58,6 +60,8 @@ const reducer = combineReducers({
   chatDetails: chatDetailsReducer,
   chatMessagesRead: markAllMessagesReadReducer,
   chatGroupName: chatGroupeNameUpdateReducer,
+  chatGroupUpdate: chatGroupeUpdateReducer,
+  chatGroupLeave: chatGroupeLeaveReducer,
   messageCreate: messageCreateReducer,
   messageList: messageListReducer,
   notificationList: notificationListReducer,

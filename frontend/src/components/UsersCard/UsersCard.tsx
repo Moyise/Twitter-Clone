@@ -6,16 +6,18 @@ import { IFollow, IUserAuth } from "../../types";
 import "./usersCard.scss";
 
 const UsersCard: FunctionComponent<IFollow> = ({ user, onClick }) => {
+  let following;
+  let followYou;
   const [followButton, setFollowButton] = useState("Following");
 
   const userLogin: IUserAuth = useSelector((state: reducerState) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const following = userInfo?.following
-    .map((followed) => followed._id)
-    .includes(user?._id!);
+  if (userInfo) {
+    following = userInfo?.following.map((followed) => followed._id).includes(user?._id!);
 
-  const followYou = userInfo?.followers.map((user) => user._id).includes(user._id);
+    followYou = userInfo?.followers.map((user) => user._id).includes(user._id);
+  }
 
   return (
     <>

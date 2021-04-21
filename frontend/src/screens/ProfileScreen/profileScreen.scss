@@ -1,14 +1,17 @@
 .profileScreen {
+  position: relative;
   max-width: 600px;
   width: 100%;
   min-height: 100vh;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 
   .profileContainer {
     .topDetails {
       position: sticky;
       top: 0;
+      left: 0;
       display: flex;
       align-items: center;
       background-color: #000000;

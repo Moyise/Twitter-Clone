@@ -1,6 +1,16 @@
+$breakpoint-mobile: 499px;
+
 .app {
-  position: relative;
   display: flex;
+  // align-items: center;
+  justify-content: center;
   max-width: 1250px;
   margin: auto;
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .app {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }

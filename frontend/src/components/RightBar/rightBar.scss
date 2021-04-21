@@ -1,3 +1,7 @@
+$breakpoint-smallDesktop: 1004px;
+$breakpoint-tablet: 900px;
+$breakpoint-mobile: 499px;
+
 .rightBar {
   position: sticky;
   top: 0;
@@ -5,7 +9,6 @@
   bottom: 0;
   z-index: 100;
   max-width: 330px;
-  width: 100%;
   max-height: 100vh;
   overflow: hidden;
 
@@ -51,5 +54,36 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       }
     }
+  }
+}
+
+@media screen and (min-width: $breakpoint-smallDesktop) {
+  .rightBar {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: $breakpoint-smallDesktop) {
+  .rightBar {
+    // width: 40%;
+
+    .rightBarContainer {
+      display: none;
+    }
+  }
+}
+@media screen and (max-width: $breakpoint-tablet) {
+  .rightBar {
+    // width: 10%;
+
+    .rightBarContainer {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .rightBar {
+    display: none;
   }
 }
