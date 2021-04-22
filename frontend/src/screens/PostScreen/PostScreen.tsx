@@ -16,6 +16,7 @@ import { postDate, postTime } from "../../timeFunction";
 import PostCard from "../../components/PostCard/PostCard";
 import Modal from "../../components/Modal/Modal";
 import { POST_DELETE_RESET } from "../../constants/postConstants";
+import Meta from "../../components/Meta";
 
 interface RouteParams {
   id: string;
@@ -88,6 +89,9 @@ const PostScreen = () => {
 
   return (
     <>
+      <Meta
+        title={`${post?.user.firstName} ${post?.user.lastName} on Twitter: ${post?.content}`}
+      />
       <div className="postScreen">
         {loading ? (
           <div className="loading">

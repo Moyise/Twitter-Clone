@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import Meta from "../../components/Meta";
 import "./notFoundScreen.scss";
 
 const NotFoundScreen = () => {
@@ -7,6 +8,7 @@ const NotFoundScreen = () => {
 
   return (
     <>
+      <Meta title="Page not found" />
       <div className="notFoundScreen">
         <div className="notFoundTop">
           <div className="icon" onClick={() => history.push("/home")}>

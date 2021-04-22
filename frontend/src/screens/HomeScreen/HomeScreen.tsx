@@ -8,6 +8,7 @@ import { POST_CREATE_RESET } from "../../constants/postConstants";
 import { socket } from "../../service/socket";
 import PostCard from "../../components/PostCard/PostCard";
 import "./homeScreen.scss";
+import Meta from "../../components/Meta";
 
 const HomeScreen = () => {
   const history = useHistory();
@@ -74,6 +75,7 @@ const HomeScreen = () => {
 
   return (
     <>
+      <Meta title="Home" />
       <div className="homeScreen">
         <div className="homeContainer">
           <p className="homeTitle">Home</p>

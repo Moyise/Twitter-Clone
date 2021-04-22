@@ -11,6 +11,7 @@ import { IChat, IMessageCreate, IMessages, IUserAuth } from "../../types";
 import { socket } from "../../service/socket";
 import MessageCard from "../MessageCard/MessageCard";
 import "./message.scss";
+import Meta from "../Meta";
 
 interface IParams {
   id: string;
@@ -175,6 +176,8 @@ const Message = () => {
 
   return (
     <>
+      {chat && <Meta title={`${getChatName(chat)}`} />}
+
       <div className="message">
         <div className="messageCtn">
           <div className="messageTop">

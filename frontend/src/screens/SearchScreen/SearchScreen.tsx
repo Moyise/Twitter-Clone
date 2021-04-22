@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
 import { listAllPosts } from "../../actions/postActions";
 import { followUser, getUsers } from "../../actions/userActions";
+import Meta from "../../components/Meta";
 import PostCard from "../../components/PostCard/PostCard";
 import UserCard from "../../components/UserCard/UserCard";
 import { POST_LIST_RESET } from "../../constants/postConstants";
@@ -87,6 +88,7 @@ const SearchScreen = () => {
 
   return (
     <>
+      <Meta title="Explore" />
       <div className="searchScreen">
         <div className="searchContainer">
           <div className="searchTop">

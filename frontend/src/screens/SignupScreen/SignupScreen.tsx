@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { register } from "../../actions/userActions";
+import Meta from "../../components/Meta";
 import { reducerState } from "../../store";
 import { IUserAuth } from "../../types";
 import "./signupScreen.scss";
@@ -63,7 +64,8 @@ const SignupScreen = () => {
   };
 
   return (
-    <div>
+    <>
+      <Meta title="Sign up for Twitter" />
       <div className="signupScreen">
         <div className="signupBackground">
           <div className="signupContainer">
@@ -243,7 +245,7 @@ const SignupScreen = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

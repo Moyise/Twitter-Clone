@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
 import { detailsUser, followUser } from "../../actions/userActions";
+import Meta from "../../components/Meta";
 import UserCard from "../../components/UserCard/UserCard";
 import { reducerState } from "../../store";
 import { IUser, IUserAuth } from "../../types";
@@ -51,6 +52,7 @@ const FollowsScreen = () => {
 
   return (
     <>
+      <Meta title="Follows" />
       <div className="followsScreen">
         <div className="followsContainer">
           <div className="topDetails">

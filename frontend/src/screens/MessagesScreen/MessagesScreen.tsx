@@ -7,6 +7,7 @@ import NewMessage from "../../components/NewMessage/NewMessage";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import "./messagesScreen.scss";
 import { getChats } from "../../actions/chatActions";
+import Meta from "../../components/Meta";
 
 const MessagesScreen = () => {
   const history = useHistory();
@@ -63,6 +64,7 @@ const MessagesScreen = () => {
 
   return (
     <>
+      <Meta title="Messages" />
       <div className="messagesScreen">
         <div className="messagesContainer">
           <div className="messageTop">

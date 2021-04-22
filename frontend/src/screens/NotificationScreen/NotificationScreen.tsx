@@ -9,6 +9,7 @@ import { reducerState } from "../../store";
 import { INotifications, IReadNotification } from "../../types";
 import NotificationCard from "../../components/NotificationCard/NotificationCard";
 import "./notificationScreen.scss";
+import Meta from "../../components/Meta";
 
 const NotificationScreen = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const NotificationScreen = () => {
 
   return (
     <>
+      <Meta title="Notifications" />
       <div className="notificationScreen">
         {loading ? (
           <div className="loading">

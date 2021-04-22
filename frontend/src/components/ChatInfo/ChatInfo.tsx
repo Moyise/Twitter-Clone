@@ -10,6 +10,7 @@ import EditGroupInfo from "../EditGroupInfo/EditGroupInfo";
 import AddPeople from "../AddPeople/AddPeople";
 import LeaveCard from "../LeaveCard/LeaveCard";
 import "./chatInfo.scss";
+import Meta from "../Meta";
 
 interface IParams {
   id: string;
@@ -78,6 +79,7 @@ const ChatInfo = () => {
 
   return (
     <>
+      <Meta title="Group info" />
       <div className="chatInfo">
         <div className="chatInfoCtn">
           <div className="chatInfoTop">

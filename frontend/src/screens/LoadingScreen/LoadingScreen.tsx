@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import Meta from "../../components/Meta";
 import { reducerState } from "../../store";
 import { IUserAuth } from "../../types";
 import "./loadingScreen.scss";
@@ -21,6 +22,7 @@ const LoadingScreen = () => {
 
   return (
     <>
+      <Meta title="Loading Twitter..." />
       <div className="loadingScreen">
         <div className="loadingContainer">
           <div className="loading">

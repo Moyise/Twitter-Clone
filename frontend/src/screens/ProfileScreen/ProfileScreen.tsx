@@ -14,6 +14,7 @@ import EditProfile from "../../components/EditProfile/EditProfile";
 import PinPost from "../../components/PinPost/PinPost";
 import { createChat } from "../../actions/chatActions";
 import { CHAT_CREATE_RESET } from "../../constants/chatConstants";
+import Meta from "../../components/Meta";
 
 interface IParams {
   id: string;
@@ -89,6 +90,7 @@ const ProfileScreen = () => {
 
   return (
     <>
+      <Meta title={`${user?.firstName} (@${user?.username})`} />
       <div className="profileScreen">
         {loading ? (
           <div className="loading">

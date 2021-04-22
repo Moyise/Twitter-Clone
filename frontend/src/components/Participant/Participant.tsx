@@ -5,6 +5,7 @@ import { getChatsById } from "../../actions/chatActions";
 import { followUser } from "../../actions/userActions";
 import { reducerState } from "../../store";
 import { IChat, IUserAuth } from "../../types";
+import Meta from "../Meta";
 import UserCard from "../UserCard/UserCard";
 import "./participant.scss";
 
@@ -38,6 +39,7 @@ const Participant = () => {
 
   return (
     <>
+      <Meta title="Direct Messages" />
       <div className="participant">
         <div className="participantCtn">
           <div className="participantTop">

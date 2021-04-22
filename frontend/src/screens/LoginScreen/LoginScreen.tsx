@@ -5,6 +5,7 @@ import { reducerState } from "../../store";
 import { IUserAuth } from "../../types";
 import { login } from "../../actions/userActions";
 import "./loginScreen.scss";
+import Meta from "../../components/Meta";
 
 const LoginScreen = () => {
   const history = useHistory();
@@ -46,6 +47,7 @@ const LoginScreen = () => {
 
   return (
     <>
+      <Meta title="Login on Twitter" />
       <div className="loginScreen">
         <div className="loginBackground">
           <div className="loginContainer">
