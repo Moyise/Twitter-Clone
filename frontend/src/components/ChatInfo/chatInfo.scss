@@ -1,3 +1,5 @@
+$breakpoint-mobile: 499px;
+
 .chatInfo {
   max-width: 550px;
   width: 100%;
@@ -135,5 +137,12 @@
         background: rgba(155, 10, 71, 0.1);
       }
     }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .chatInfo {
+    border-left: none;
+    border-right: none;
   }
 }

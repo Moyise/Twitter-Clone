@@ -1,3 +1,5 @@
+$breakpoint-mobile: 499px;
+
 .postScreen {
   max-width: 600px;
   width: 100%;
@@ -176,5 +178,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .postScreen {
+    border-left: none;
+    border-right: none;
   }
 }

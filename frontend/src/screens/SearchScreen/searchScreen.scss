@@ -1,3 +1,5 @@
+$breakpoint-mobile: 499px;
+
 .searchScreen {
   max-width: 600px;
   width: 100%;
@@ -80,5 +82,12 @@
         display: block;
       }
     }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .searchScreen {
+    border-left: none;
+    border-right: none;
   }
 }

@@ -1,4 +1,5 @@
 $breakpoint-tablet: 988px;
+$breakpoint-mobile: 499px;
 
 .messagesScreen {
   max-width: 400px;
@@ -64,5 +65,12 @@ $breakpoint-tablet: 988px;
 @media screen and (max-width: $breakpoint-tablet) {
   .messagesScreen {
     max-width: 600px;
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .messagesScreen {
+    border-left: none;
+    border-right: none;
   }
 }

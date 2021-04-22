@@ -252,3 +252,10 @@ $breakpoint-small: 400px;
     }
   }
 }
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .message {
+    border-left: none;
+    border-right: none;
+  }
+}
