@@ -135,35 +135,21 @@ const ChatInfo = () => {
                 </p>
               </>
             ) : (
-              images?.length === 1 && (
-                <>
-                  <div className="left">
-                    {images ? (
-                      images.slice(0, 3).map((image: any, index: number) => (
-                        <Link
-                          to={`/messages/${chat?._id}/participants`}
-                          key={index}
-                          className="linkCtn"
-                        >
-                          <img src={image} alt="profile" className="groupChat" />
-                        </Link>
-                      ))
-                    ) : (
-                      <Link to={`/profile/${userIds}`}>
-                        <img className="profile" src={images![0]} alt="profile" />
-                      </Link>
-                    )}
-                  </div>
-
-                  <Link to={`/profile/${userIds}`} className="middle single">
-                    <p className="top">
-                      <span>{getChatName(chat).substring(0, 26)}</span>
-                      {getChatName(chat).length > 26 && <span>...</span>}
-                    </p>
-                    <p className="bottom">@{username}</p>
+              <>
+                <div className="left">
+                  <Link to={`/profile/${userIds}`}>
+                    <img className="profile" src={images![0]} alt="profile" />
                   </Link>
-                </>
-              )
+                </div>
+
+                <Link to={`/profile/${userIds}`} className="middle single">
+                  <p className="top">
+                    <span>{getChatName(chat).substring(0, 26)}</span>
+                    {getChatName(chat).length > 26 && <span>...</span>}
+                  </p>
+                  <p className="bottom">@{username}</p>
+                </Link>
+              </>
             )}
           </div>
           <div className="bar"></div>
@@ -181,11 +167,11 @@ const ChatInfo = () => {
                 </div>
               </div>
               <div className="bar"></div>
-              <div className="leave" onClick={() => setLeaveModal(!leaveModal)}>
-                <p>Leave conversation</p>
-              </div>
             </>
           )}
+          <div className="leave" onClick={() => setLeaveModal(!leaveModal)}>
+            <p>Leave conversation</p>
+          </div>
         </div>
         <LeaveCard
           chatId={chatId}

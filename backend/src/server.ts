@@ -51,14 +51,14 @@ if (process.env.NODE_ENV === "production") {
 
 const appServer = app.listen(PORT, () =>
   console.log(
-    `Twitter app listening on port ${PORT}. Now browse to http://localhost:${PORT}${server.graphqlPath}`
+    `Twitter app listening on port ${PORT}. Now browse to http://localhost:${PORT}${server.graphqlPath} `
   )
 );
 
 const io = new Server(appServer, { pingTimeout: 60000 });
 
 io.on("connection", (socket: Socket) => {
-  console.log("New user connected");
+  //console.log("New user connected");
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
@@ -85,6 +85,6 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    //console.log("User disconnected");
   });
 });
