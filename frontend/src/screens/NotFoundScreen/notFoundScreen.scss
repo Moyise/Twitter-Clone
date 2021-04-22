@@ -1,0 +1,59 @@
+$breakpoint-mobile: 499px;
+
+.notFoundScreen {
+  max-width: 930px;
+  width: 100%;
+  height: 100vh;
+
+  .notFoundTop {
+    display: none;
+  }
+  .notFoundCenter {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-style: normal;
+    padding-top: 40px;
+    .title {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 23px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .desc {
+      padding-top: 40px;
+      font-weight: normal;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      span {
+        color: #1a91da;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .notFoundScreen {
+    .notFoundTop {
+      position: sticky;
+      top: 0;
+      background-color: #000000;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 14px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: flex-start;
+      z-index: 999;
+      p {
+        padding-left: 20px;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 18px;
+      }
+      .icon {
+        cursor: pointer;
+      }
+    }
+  }
+}

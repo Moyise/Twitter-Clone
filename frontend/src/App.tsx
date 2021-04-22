@@ -18,6 +18,7 @@ import EmptyMessage from "./components/EmptyMessage/EmptyMessage";
 import SearchScreen from "./screens/SearchScreen/SearchScreen";
 import MessagesScreen from "./screens/MessagesScreen/MessagesScreen";
 import NotificationScreen from "./screens/NotificationScreen/NotificationScreen";
+import NotFoundScreen from "./screens/NotFoundScreen/NotFoundScreen";
 
 function App() {
   const [dimensions, setDimensions] = useState({
@@ -133,6 +134,13 @@ function App() {
                   <LoadingScreen />
                 </div>
               </Route>
+
+              <Route>
+                <div className="app">
+                  <Sidebar />
+                  <NotFoundScreen />
+                </div>
+              </Route>
             </Switch>
           </Router>
         </>
@@ -241,6 +249,13 @@ function App() {
               <Route path="/" exact>
                 <div className="app">
                   <LoadingScreen />
+                </div>
+              </Route>
+
+              <Route>
+                <div className="app">
+                  <Sidebar />
+                  <NotFoundScreen />
                 </div>
               </Route>
             </Switch>
